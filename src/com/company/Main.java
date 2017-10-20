@@ -7,6 +7,9 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
+
+        Model.firstInit();
+
         // create a scanner so we can read the command-line input
         Scanner scanner = new Scanner(System.in);
         System.out.println("GRADY-ENTS");
