@@ -9,6 +9,7 @@ public class Main {
     public static void main(String[] args) {
 
         Model.firstInit();
+        TableCreator.creatAll();
 
         // create a scanner so we can read the command-line input
         Scanner scanner = new Scanner(System.in);
@@ -35,4 +36,6 @@ public class Main {
             professorPage.professorPage();
         }
     }
+
+
 }
