@@ -2,17 +2,40 @@ package com.company;
 
 import javax.naming.*;
 import javax.sql.DataSource;
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.*;
 import java.sql.*;
 
 public class TableCreator {
     public static void createAll() {
 
-
+        String username = "";
+        String password = "";
         final String url = "jdbc:mysql://localhost:3306/gradients";
-        final String username = "root";
-        final String password = "PWD123admin";
+        String filePath = new File("").getAbsolutePath();
+
+        try(BufferedReader br = new BufferedReader(new FileReader("src/com/company/password.txt"))) {
+            StringBuilder sb = new StringBuilder();
+            String line = br.readLine();
+
+            while (line != null) {
+                sb.append(line);
+                sb.append(System.lineSeparator());
+                line = br.readLine();
+            }
+            String everything = sb.toString();
+            String[] stringArray = everything.split("\n");
+
+
+            username = stringArray[0];
+            password = stringArray[1];
+        }
+        catch (IOException ex)
+        {
+            System.out.println(ex.toString());
+        }
+
+
+
 
         System.out.println("Connecting to database...");
 
