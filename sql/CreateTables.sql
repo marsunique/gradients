@@ -37,8 +37,8 @@ CREATE TABLE IF NOT EXISTS Exercise
 (
   wrong_points   FLOAT                               NOT NULL,
   right_points   FLOAT                               NOT NULL,
-  start_time     TIMESTAMP                           NOT NULL,
-  end_time       TIMESTAMP                           NOT NULL,
+  start_time     TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  end_time       TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
   ex_id          INT                                 NOT NULL AUTO_INCREMENT,
   name           VARCHAR(255)                        NOT NULL,
   num_attempts   INT                                 NOT NULL,
