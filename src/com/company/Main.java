@@ -1,7 +1,5 @@
 package com.company;
-import javax.sound.midi.Soundbank;
-import java.util.Scanner;
-
+import com.company.util.TableCreator;
 
 
 public class Main {
@@ -9,6 +7,13 @@ public class Main {
     public static void main(String[] args) {
 
         TableCreator.createAll();
+
+//        ProfExerciseController controller = new ProfExerciseController();
+//        if(controller.addExercise()){
+//            System.out.println("Added exercise.");
+//        } else {
+//            System.out.println("Failed to add exercise.");
+//        }
 
 //        Student_Courses_Controller scc = new Student_Courses_Controller();
 //        scc.displayMenu();
