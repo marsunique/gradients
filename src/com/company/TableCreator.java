@@ -12,7 +12,7 @@ public class TableCreator {
 
         final String url = "jdbc:mysql://localhost:3306/gradients";
         final String username = "root";
-        final String password = "PWD123admin";
+        final String password = "ygx123456";
 
         System.out.println("Connecting to database...");
 
@@ -26,17 +26,7 @@ public class TableCreator {
             // driver available to clients.
 
             Class.forName("com.mysql.jdbc.Driver");
-
-
-            try {
-                Class.forName("com.mysql.jdbc.Driver");
-                conn = DriverManager.getConnection(url, username, password);
-                System.out.println("Database connected!");
-            } catch (ClassNotFoundException e) {
-                System.err.println("Unable to get mysql driver: " + e);
-            } catch (SQLException e) {
-                System.err.println("Unable to connect to server: " + e);
-            }
+            conn = MySqlClient.getConn();
             ScriptRunner runner = new ScriptRunner(conn, false, false);
             String file = "./sql/CreateTables.sql";
             runner.runScript(new BufferedReader(new FileReader(file)));
