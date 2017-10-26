@@ -1,4 +1,4 @@
-package com.company;
+package com.company.util;
 
 /*
  * Slightly modified version of the com.ibatis.common.jdbc.ScriptRunner class
