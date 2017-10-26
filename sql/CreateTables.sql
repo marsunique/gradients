@@ -1,20 +1,4 @@
-DROP TABLE IF EXISTS ExQuestions;
-DROP TABLE IF EXISTS AttAnswers;
-DROP TABLE IF EXISTS Attempt;
-DROP TABLE IF EXISTS QuesParams;
-DROP TABLE IF EXISTS Answer;
-DROP TABLE IF EXISTS Question;
-DROP TABLE IF EXISTS CourseTopic;
-DROP TABLE IF EXISTS EnrolledIn;
-DROP TABLE IF EXISTS Assists;
-DROP TABLE IF EXISTS Topic;
-DROP TABLE IF EXISTS Exercise;
-DROP TABLE IF EXISTS Course;
-DROP TABLE IF EXISTS Student;
-DROP TABLE IF EXISTS Instructor;
-DROP TABLE IF EXISTS TA;
-
-CREATE TABLE TA
+CREATE TABLE IF NOT EXISTS TA
 (
   ta_id      VARCHAR(255) NOT NULL,
   first_name VARCHAR(255) NOT NULL,
@@ -22,7 +6,7 @@ CREATE TABLE TA
   PRIMARY KEY (ta_id)
 );
 
-CREATE TABLE Instructor
+CREATE TABLE IF NOT EXISTS Instructor
 (
   inst_id    VARCHAR(255) NOT NULL,
   first_name VARCHAR(255) NOT NULL,
@@ -30,7 +14,7 @@ CREATE TABLE Instructor
   PRIMARY KEY (inst_id)
 );
 
-CREATE TABLE Student
+CREATE TABLE IF NOT EXISTS Student
 (
   student_id VARCHAR(255) NOT NULL,
   first_name VARCHAR(255) NOT NULL,
@@ -38,7 +22,7 @@ CREATE TABLE Student
   PRIMARY KEY (student_id)
 );
 
-CREATE TABLE Course
+CREATE TABLE IF NOT EXISTS Course
 (
   course_id   INT          NOT NULL AUTO_INCREMENT,
   course_name VARCHAR(255) NOT NULL,
@@ -49,7 +33,7 @@ CREATE TABLE Course
   FOREIGN KEY (inst_id) REFERENCES Instructor (inst_id)
 );
 
-CREATE TABLE Exercise
+CREATE TABLE IF NOT EXISTS Exercise
 (
   wrong_points   FLOAT                               NOT NULL,
   right_points   FLOAT                               NOT NULL,
@@ -65,14 +49,14 @@ CREATE TABLE Exercise
   FOREIGN KEY (course_id) REFERENCES Course (course_id)
 );
 
-CREATE TABLE Topic
+CREATE TABLE IF NOT EXISTS Topic
 (
   topic_id INT          NOT NULL AUTO_INCREMENT,
   name     VARCHAR(255) NOT NULL,
   PRIMARY KEY (topic_id)
 );
 
-CREATE TABLE Assists
+CREATE TABLE IF NOT EXISTS Assists
 (
   ta_id     VARCHAR(255) NOT NULL,
   course_id INT          NOT NULL,
@@ -81,7 +65,7 @@ CREATE TABLE Assists
   FOREIGN KEY (course_id) REFERENCES Course (course_id)
 );
 
-CREATE TABLE EnrolledIn
+CREATE TABLE IF NOT EXISTS EnrolledIn
 (
   student_id VARCHAR(255) NOT NULL,
   course_id  INT          NOT NULL,
@@ -90,7 +74,7 @@ CREATE TABLE EnrolledIn
   FOREIGN KEY (course_id) REFERENCES Course (course_id)
 );
 
-CREATE TABLE CourseTopic
+CREATE TABLE IF NOT EXISTS CourseTopic
 (
   course_id INT NOT NULL,
   topic_id  INT NOT NULL,
@@ -99,7 +83,7 @@ CREATE TABLE CourseTopic
   FOREIGN KEY (topic_id) REFERENCES Topic (topic_id)
 );
 
-CREATE TABLE Question
+CREATE TABLE IF NOT EXISTS Question
 (
   text       VARCHAR(255) NOT NULL,
   hint       VARCHAR(255),
@@ -111,7 +95,7 @@ CREATE TABLE Question
   FOREIGN KEY (topic_id) REFERENCES Topic (topic_id)
 );
 
-CREATE TABLE Answer
+CREATE TABLE IF NOT EXISTS Answer
 (
   text    VARCHAR(255) NOT NULL,
   ans_id  INT          NOT NULL AUTO_INCREMENT,
@@ -120,17 +104,17 @@ CREATE TABLE Answer
   FOREIGN KEY (ques_id) REFERENCES Question (ques_id)
 );
 
-CREATE TABLE QuesParams
+CREATE TABLE IF NOT EXISTS QuesParams
 (
-  ans_id   INT NOT NULL,
-  param_id INT NOT NULL AUTO_INCREMENT,
+  ans_id     INT NOT NULL,
+  param_id   INT NOT NULL AUTO_INCREMENT,
   param_vals TEXT,
-  ques_id  INT NOT NULL,
+  ques_id    INT NOT NULL,
   PRIMARY KEY (param_id, ques_id),
   FOREIGN KEY (ques_id) REFERENCES Question (ques_id)
 );
 
-CREATE TABLE Attempt
+CREATE TABLE IF NOT EXISTS Attempt
 (
   att_id     INT          NOT NULL AUTO_INCREMENT,
   score      FLOAT        NOT NULL,
@@ -142,7 +126,8 @@ CREATE TABLE Attempt
   FOREIGN KEY (ex_id, course_id) REFERENCES Exercise (ex_id, course_id)
 );
 
-CREATE TABLE AttAnswers (
+CREATE TABLE IF NOT EXISTS AttAnswers
+(
   att_id   INT NOT NULL,
   ques_id  INT NOT NULL,
   param_id INT NOT NULL,
@@ -151,7 +136,7 @@ CREATE TABLE AttAnswers (
   FOREIGN KEY (param_id, ques_id) REFERENCES QuesParams (param_id, ques_id)
 );
 
-CREATE TABLE ExQuestions
+CREATE TABLE IF NOT EXISTS ExQuestions
 (
   ex_id     INT NOT NULL,
   course_id INT NOT NULL,
