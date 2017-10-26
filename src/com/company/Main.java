@@ -8,6 +8,8 @@ public class Main {
 
     public static void main(String[] args) {
 
+        TableCreator.createAll();
+
         Student_Courses_Controller scc = new Student_Courses_Controller();
         scc.displayMenu();
         //Model.firstInit();
