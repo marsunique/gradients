@@ -10,8 +10,8 @@ public class Main {
 
         TableCreator.createAll();
 
-        Student_Courses_Controller scc = new Student_Courses_Controller();
-        scc.displayMenu();
+//        Student_Courses_Controller scc = new Student_Courses_Controller();
+//        scc.displayMenu();
         //Model.firstInit();
         /*
         // create a scanner so we can read the command-line input

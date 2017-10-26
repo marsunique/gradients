@@ -10,8 +10,8 @@ public class TableCreator {
     public static void createAll() {
 
 
-        final String url = "jdbc:mysql://lensdbinstance.cheljmwns2i6.us-west-2.rds.amazonaws.com:3306/gradients";
-        final String username = "admin";
+        final String url = "jdbc:mysql://localhost:3306/gradients";
+        final String username = "root";
         final String password = "PWD123admin";
 
         System.out.println("Connecting to database...");
