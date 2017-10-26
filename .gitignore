@@ -143,4 +143,5 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+src/com/company/password.txt
 # End of https://www.gitignore.io/api/osx,java,windows,intellij
