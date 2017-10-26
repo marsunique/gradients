@@ -1,5 +1,9 @@
 package com.company;
 
+import com.company.util.DBConnector;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.util.Scanner;
 
@@ -10,7 +14,9 @@ public class ProfExerciseController {
         in = new Scanner(System.in);
     }
 
-    public void addExercise() {
+    public boolean addExercise() {
+        boolean added = false;
+
         // Required Variables
         String name, policy;
         Boolean adaptive;
@@ -30,7 +36,7 @@ public class ProfExerciseController {
             numRetries = Integer.parseInt(in.nextLine());
         } catch (Exception e) {
             System.out.println("Number of retries must be an integer.");
-            return;
+            return added;
         }
 
         System.out.print("Enter Start Date/Time (yyyy-MM-dd HH:mm:ss): ");
@@ -38,7 +44,7 @@ public class ProfExerciseController {
             start = Timestamp.valueOf(in.nextLine());
         } catch (Exception e) {
             System.out.println("Improperly formatted date.");
-            return;
+            return added;
         }
 
         System.out.print("Enter End Date/Time(yyyy-MM-dd HH:mm:ss): ");
@@ -46,7 +52,7 @@ public class ProfExerciseController {
             end = Timestamp.valueOf(in.nextLine());
         } catch (Exception e) {
             System.out.println("Improperly formatted date.");
-            return;
+            return added;
         }
 
         System.out.print("Enter Points Per Correct Answer: ");
@@ -54,7 +60,7 @@ public class ProfExerciseController {
             pointsCorrect = Double.parseDouble(in.nextLine());
         } catch (Exception e) {
             System.out.println("Points must be a number.");
-            return;
+            return added;
         }
 
         System.out.print("Enter Points Per Incorrect Answer: ");
@@ -62,7 +68,7 @@ public class ProfExerciseController {
             pointsIncorrect = Double.parseDouble(in.nextLine());
         } catch (Exception e) {
             System.out.println("Points must be a number.");
-            return;
+            return added;
         }
 
         System.out.println("Enter a Scoring Policy");
@@ -71,19 +77,19 @@ public class ProfExerciseController {
         System.out.println(" - (A)verage");
         System.out.print("Policy: ");
         String choice = in.nextLine();
-        switch (choice) {
-            case "L":
+        switch (choice.toLowerCase()) {
+            case "l":
                 policy = "last";
                 break;
-            case "H":
+            case "h":
                 policy = "highest";
                 break;
-            case "A":
+            case "a":
                 policy = "average";
                 break;
             default:
                 System.out.println("Policy must be one of L, H, or A.");
-                return;
+                return added;
         }
 
         System.out.println("Enter a Exercise Type");
@@ -91,16 +97,16 @@ public class ProfExerciseController {
         System.out.println(" - (A)daptive");
         System.out.print("Type: ");
         choice = in.nextLine();
-        switch (choice) {
-            case "S":
+        switch (choice.toLowerCase()) {
+            case "s":
                 adaptive = false;
                 break;
-            case "A":
+            case "a":
                 adaptive = true;
                 break;
             default:
                 System.out.println("Type must be one of S or A.");
-                return;
+                return added;
         }
 
 //        String name, policy;
@@ -117,6 +123,11 @@ public class ProfExerciseController {
         System.out.println("Retries: " + numRetries);
         System.out.println("Corrent Points: " + pointsCorrect);
         System.out.println("Incorrect Points: " + pointsIncorrect);
+
+        Connection conn = DBConnector.getConnection();
+
+        added = true;
+        return added;
     }
 
 }
