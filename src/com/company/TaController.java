@@ -1,6 +1,6 @@
 package com.company;
 
-public class TaController {
+public class TaController implements Controller {
     private static TaController instance = null;
     // empty constructor
     private TaController() {}

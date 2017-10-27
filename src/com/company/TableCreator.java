@@ -1,5 +1,7 @@
 package com.company;
 
+import com.company.util.ScriptRunner;
+
 import javax.naming.*;
 import javax.sql.DataSource;
 import java.io.*;
@@ -63,25 +65,6 @@ public class TableCreator {
             ScriptRunner runner = new ScriptRunner(conn, false, false);
             String file = "./sql/CreateTables.sql";
             runner.runScript(new BufferedReader(new FileReader(file)));
-
-//            try {
-//
-//                // Get a connection from the first driver in the
-//                // DriverManager list that recognizes the URL jdbcURL
-//
-//                conn = DriverManager.getConnection(url, username, password);
-//                System.out.println("Database connected!");
-//
-//                // Create a statement object that will be sending your
-//                // SQL statements to the DBMS
-//
-//                stmt = conn.createStatement();
-//
-//                // Create all required tables
-//            } finally {
-//                close(stmt);
-//                close(conn);
-//            }
         } catch (Throwable oops) {
             throw new IllegalStateException("Cannot connect the database!", oops);
         } finally {

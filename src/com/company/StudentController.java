@@ -1,6 +1,6 @@
 package com.company;
 
-public class StudentController {
+public class StudentController implements Controller {
     private static StudentController instance = null;
     // empty constructor
     private StudentController() {}
