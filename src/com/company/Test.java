@@ -2,12 +2,17 @@ package com.company;
 
 import com.company.models.UserModel;
 import com.company.objects.User;
+import com.company.util.ScriptRunner;
+import com.company.util.TableCreator;
 
 import java.io.PrintStream;
 import java.util.Scanner;
 
 public class Test {
     public static void main(String[] args) {
+
+        TableCreator.resetDB();
+
         Scanner scanner = new Scanner(System.in);
         System.out.println("GRADY-ENTS");
         System.out.print("Login ID: ");

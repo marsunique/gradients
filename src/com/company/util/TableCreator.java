@@ -24,7 +24,26 @@ public class TableCreator {
         } finally {
             DBConnector.closeConnection(conn);
         }
+    }
 
+    public static void resetDB() {
+        Connection conn = DBConnector.getConnection();
+        ScriptRunner runner = new ScriptRunner(conn, false, false);
+        String file = null;
 
+        try {
+            file = "./sql/DropTables.sql";
+            runner.runScript(new BufferedReader(new FileReader(file)));
+            file = "./sql/CreateTables.sql";
+            runner.runScript(new BufferedReader(new FileReader(file)));
+            file = "./sql/SampleData.sql";
+            runner.runScript(new BufferedReader(new FileReader(file)));
+        } catch (IOException e) {
+            System.err.print("Error when reading file: " + e);
+        } catch (SQLException e) {
+            System.err.print("Error when executing SQL: " + e);
+        } finally {
+            DBConnector.closeConnection(conn);
+        }
     }
 }
