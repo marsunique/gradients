@@ -9,9 +9,9 @@ import java.sql.*;
 
 public class TableCreator {
 
-    public static void createAll() {
+    public static void createAll() throws IOException{
 
-        Connection conn = DBConnector.getConnection();
+        Connection conn = DBConnector.getConnector().getConn();
         ScriptRunner runner = new ScriptRunner(conn, false, false);
         String file = "./sql/CreateTables.sql";
 
@@ -26,8 +26,8 @@ public class TableCreator {
         }
     }
 
-    public static void resetDB() {
-        Connection conn = DBConnector.getConnection();
+    public static void resetDB() throws IOException{
+        Connection conn = DBConnector.getConnector().getConn();
         ScriptRunner runner = new ScriptRunner(conn, false, false);
         String file = null;
 

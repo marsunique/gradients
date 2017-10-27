@@ -1,43 +1,13 @@
 package com.company;
 
+import com.company.util.DBConnector;
 import com.company.util.ScriptRunner;
 
-import javax.naming.*;
-import javax.sql.DataSource;
 import java.io.*;
 import java.sql.*;
 
 public class TableCreator {
     public static void createAll() {
-
-        String username = "";
-        String password = "";
-        final String url = "jdbc:mysql://localhost:3306/gradients";
-        String filePath = new File("").getAbsolutePath();
-
-        try(BufferedReader br = new BufferedReader(new FileReader("src/com/company/password.txt"))) {
-            StringBuilder sb = new StringBuilder();
-            String line = br.readLine();
-
-            while (line != null) {
-                sb.append(line);
-                sb.append(System.lineSeparator());
-                line = br.readLine();
-            }
-            String everything = sb.toString();
-            String[] stringArray = everything.split("\n");
-
-
-            username = stringArray[0];
-            password = stringArray[1];
-        }
-        catch (IOException ex)
-        {
-            System.out.println(ex.toString());
-        }
-
-
-
 
         System.out.println("Connecting to database...");
 
@@ -51,17 +21,7 @@ public class TableCreator {
             // driver available to clients.
 
             Class.forName("com.mysql.jdbc.Driver");
-
-
-            try {
-                Class.forName("com.mysql.jdbc.Driver");
-                conn = DriverManager.getConnection(url, username, password);
-                System.out.println("Database connected!");
-            } catch (ClassNotFoundException e) {
-                System.err.println("Unable to get mysql driver: " + e);
-            } catch (SQLException e) {
-                System.err.println("Unable to connect to server: " + e);
-            }
+            conn = DBConnector.getConnector().getConn();
             ScriptRunner runner = new ScriptRunner(conn, false, false);
             String file = "./sql/CreateTables.sql";
             runner.runScript(new BufferedReader(new FileReader(file)));

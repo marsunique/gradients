@@ -4,6 +4,7 @@ import com.company.objects.User;
 import com.company.UserType;
 import com.company.util.DBConnector;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,10 +12,10 @@ import java.sql.Statement;
 
 public class UserModel {
 
-    public static User getUser(String username, String password) {
+    public static User getUser(String username, String password) throws IOException{
         User ret = new User();
 
-        Connection conn = DBConnector.getConnection();
+        Connection conn = DBConnector.getConnector().getConn();
         Statement stmt = null;
 
         String query =

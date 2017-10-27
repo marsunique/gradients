@@ -1,12 +1,18 @@
 package com.company;
-import com.company.util.TableCreator;
+import com.company.util.DBConnector;
 
+import java.io.IOException;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        TableCreator.createAll();
+        //TableCreator.createAll();
+        try {
+            com.company.util.TableCreator.createAll();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 //        ProfExerciseController controller = new ProfExerciseController();
 //        if(controller.addExercise()){

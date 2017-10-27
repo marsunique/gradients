@@ -2,8 +2,8 @@ package com.company;
 
 import com.company.util.DBConnector;
 
+import java.io.IOException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.util.Scanner;
 
@@ -14,7 +14,7 @@ public class ProfExerciseController {
         in = new Scanner(System.in);
     }
 
-    public boolean addExercise() {
+    public boolean addExercise() throws IOException{
         boolean added = false;
 
         // Required Variables
@@ -124,7 +124,7 @@ public class ProfExerciseController {
         System.out.println("Corrent Points: " + pointsCorrect);
         System.out.println("Incorrect Points: " + pointsIncorrect);
 
-        Connection conn = DBConnector.getConnection();
+        Connection conn = DBConnector.getConnector().getConn();
 
         added = true;
         return added;
