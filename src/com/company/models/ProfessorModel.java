@@ -15,6 +15,10 @@ public class ProfessorModel {
     }
 
     public void viewProfile() {
+        String query = "SELECT * " +
+                        "FROM Instructor " +
+                        "WHERE inst_id = " + "instructor1;";
+
 
     }
 
