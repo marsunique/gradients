@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS Exercise
 CREATE TABLE IF NOT EXISTS TAFor
 (
   ta_id     VARCHAR(255) NOT NULL,
-  course_id VARCHAR(6)   NOT NULL,
+  course_id INT          NOT NULL,
   PRIMARY KEY (ta_id, course_id),
   FOREIGN KEY (ta_id) REFERENCES Graduate (grad_id),
   FOREIGN KEY (course_id) REFERENCES Course (course_id)
