@@ -13,7 +13,9 @@ public class User {
     public ArrayList<String> teaches;
     public ArrayList<String> enrolled;
 
-    public User(){
+    private static User user = null;
+
+    private User(){
         type = null;
         username = null;
         firstName = null;
@@ -21,6 +23,13 @@ public class User {
         tas = new ArrayList<>();
         teaches = new ArrayList<>();
         enrolled = new ArrayList<>();
+    }
+
+    public static User getUser() {
+        if (user == null) {
+            user = new User();
+        }
+        return user;
     }
 
 }

@@ -13,7 +13,7 @@ import java.sql.Statement;
 public class UserModel {
 
     public static User getUser(String username, String password) throws IOException{
-        User ret = new User();
+        User ret = User.getUser();
 
         Connection conn = DBConnector.getConnector().getConn();
         Statement stmt = null;
