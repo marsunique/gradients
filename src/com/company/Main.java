@@ -1,30 +1,25 @@
 package com.company;
 import com.company.util.DBConnector;
 
+import javax.jws.WebParam;
+import java.util.Scanner;
+
+
 import java.io.IOException;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        //TableCreator.createAll();
         try {
             com.company.util.TableCreator.createAll();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-//        ProfExerciseController controller = new ProfExerciseController();
-//        if(controller.addExercise()){
-//            System.out.println("Added exercise.");
-//        } else {
-//            System.out.println("Failed to add exercise.");
-//        }
 
-//        Student_Courses_Controller scc = new Student_Courses_Controller();
-//        scc.displayMenu();
         //Model.firstInit();
-        /*
+
         // create a scanner so we can read the command-line input
         Scanner scanner = new Scanner(System.in);
         System.out.println("GRADY-ENTS");
@@ -36,12 +31,15 @@ public class Main {
 
         System.out.println("Checking Password....");
 
-        switch (username){
-            case "admin":
-            case "Admin":
-                adminLogin(username, password);
+        Boolean loginSuccess = Model.login(username, password);
+
+        if (loginSuccess){
+            System.out.println("Login successful!");
         }
-        */
+        else{
+            System.out.println("Login unsuccessful!");
+        }
+
     }
 
     public static void adminLogin(String username, String password){

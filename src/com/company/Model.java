@@ -1,9 +1,15 @@
 package com.company;
 
+import com.company.util.DBConnector;
+import com.company.util.ScriptRunner;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.SQLException;
 
 public class Model {
     public static boolean checkProfessorPassword(String username, String password){
@@ -14,6 +20,37 @@ public class Model {
             System.out.println("\b") ;
         }
         return true;
+    }
+
+    public static boolean login(String username, String password) {
+        String loginString = "SELECT * FROM Gradients.User WHERE password = '" + password + "' " + "AND id " + " = '" + username + "';";
+
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        Boolean successfulLogin = false;
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DBConnector.getConnector().getConn();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(loginString);
+
+            while (rs.next()) {
+                successfulLogin = true;
+            }
+            // Now do something with the ResultSet ....
+        } catch (SQLException ex) {
+            // handle any errors
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        } catch(Exception e) {
+            System.out.println(e.toString());
+        }finally{
+            ;
+        }
+        return successfulLogin;
     }
 
     public static void firstInit(){
