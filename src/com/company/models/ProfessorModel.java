@@ -36,8 +36,8 @@ public class ProfessorModel {
         ResultSet rs = statement.executeQuery(query);
 
         while (rs.next()) {
-            System.out.println(rs.getString("first_name"));
-            System.out.println(rs.getString("last_name"));
+            System.out.println("First Name: " + rs.getString("first_name"));
+            System.out.println("Last Name: " + rs.getString("last_name"));
         }
 
     }
@@ -53,16 +53,23 @@ public class ProfessorModel {
         statement.executeUpdate(query);
     }
 
-    public void studentEnrollDrop() {
-
+    public void studentEnrollDrop(String studentID, int courseID) throws SQLException {
+        Statement statement = conn.createStatement();
+        String query = "DELETE FROM EnrolledIn WHERE student_id = '" + studentID + "' AND " +
+                "course_id = " + courseID + ";";
+        statement.executeUpdate(query);
     }
 
     public void viewReport() {
 
     }
 
-    public void setupTA() {
+    public void setupTA(String TAId, int courseID) throws SQLException{
+        Statement statement = conn.createStatement();
 
+        String query = "INSERT INTO TAFor(ta_id, course_id) VALUES('"+
+                TAId + "'," + courseID +")";
+        statement.executeUpdate(query);
     }
 
     public void exerciseViewAdd() {
