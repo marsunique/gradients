@@ -46,4 +46,13 @@ public class ExerciseModel {
 
         statement.execute();
     }
+
+    public void deleteExercise(int exID, int courseID) throws SQLException{
+        String query = "DELETE FROM Exercise WHERE course_id = ? AND ex_id = ?";
+        PreparedStatement statement = conn.prepareStatement(query);
+        statement.setInt(1, courseID);
+        statement.setInt(2, exID);
+
+        statement.execute();
+    }
 }

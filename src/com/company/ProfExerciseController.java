@@ -12,9 +12,11 @@ import java.util.Scanner;
 
 public class ProfExerciseController {
     Scanner in;
+    ExerciseModel exerciseModel = null;
 
-    public ProfExerciseController() {
+    public ProfExerciseController() throws IOException {
         in = new Scanner(System.in);
+        exerciseModel = ExerciseModel.getExerciseModel();
     }
 
     public boolean addExercise() throws IOException, SQLException {
@@ -139,15 +141,24 @@ public class ProfExerciseController {
         System.out.println("Correct Points: " + exercise.getPointsCorrect());
         System.out.println("Incorrect Points: " + exercise.getPointsIncorrect());
 
-        ExerciseModel.getExerciseModel().createExercies(exercise);
+        exerciseModel.createExercies(exercise);
 
         added = true;
         return added;
     }
 
-    public static void main(String[] args) throws IOException, SQLException {
-        ProfExerciseController c = new ProfExerciseController();
-        c.addExercise();
+    public void deleteExercise() throws SQLException, IOException{
+        int exID, courseID;
+
+        System.out.println("-------------------");
+        System.out.println(" Exercise Deprecation");
+        System.out.println("-------------------");
+        System.out.print("Enter Exercise ID: ");
+        exID = Integer.parseInt(in.nextLine());
+        System.out.print("Enter Course ID: ");
+        courseID = Integer.parseInt(in.nextLine());
+
+        exerciseModel.deleteExercise(exID, courseID);
     }
 
 }
