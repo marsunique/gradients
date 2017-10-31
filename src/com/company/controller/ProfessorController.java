@@ -1,4 +1,6 @@
-package com.company;
+package com.company.controller;
+
+import com.company.Controller;
 
 import java.util.Scanner;
 

@@ -1,4 +1,4 @@
-package com.company;
+package com.company.controller;
 
 import com.company.models.ExerciseModel;
 import com.company.objects.Exercise;

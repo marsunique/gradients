@@ -1,4 +1,5 @@
-package com.company;
+package com.company.controller;
+
 import java.util.Scanner;
 
 public class Student_Courses_Controller {
