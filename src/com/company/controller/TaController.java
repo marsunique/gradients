@@ -1,7 +1,5 @@
 package com.company.controller;
 
-import com.company.Controller;
-
 public class TaController implements Controller {
     private static TaController instance = null;
     // empty constructor

@@ -1,7 +1,5 @@
 package com.company.controller;
 
-import com.company.Controller;
-
 import java.util.Scanner;
 
 public class ProfessorController implements Controller {

@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.controller.Controller;
 import com.company.controller.ProfessorController;
 import com.company.controller.StudentController;
 import com.company.controller.TaController;

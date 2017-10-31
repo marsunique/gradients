@@ -1,6 +1,7 @@
 package com.company.controller;
 
 import com.company.models.ExerciseModel;
+import com.company.models.ProfessorModel;
 import com.company.objects.Exercise;
 import com.company.util.DBConnector;
 
@@ -11,12 +12,20 @@ import java.sql.Timestamp;
 import java.util.Scanner;
 
 public class ProfExerciseController {
+    private static ProfExerciseController profExerciseController = null;
     Scanner in;
     ExerciseModel exerciseModel = null;
 
-    public ProfExerciseController() throws IOException {
+    private ProfExerciseController() throws IOException {
         in = new Scanner(System.in);
         exerciseModel = ExerciseModel.getExerciseModel();
+    }
+
+    public static ProfExerciseController getProfessorController() throws IOException {
+        if (profExerciseController == null) {
+            profExerciseController = new ProfExerciseController();
+        }
+        return profExerciseController;
     }
 
     public boolean addExercise() throws IOException, SQLException {
