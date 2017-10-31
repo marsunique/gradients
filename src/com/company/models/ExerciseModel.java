@@ -31,7 +31,7 @@ public class ExerciseModel {
 
         String query = "INSERT INTO Exercise(name, scoring_policy, " +
                 "num_attempts, start_time, end_time, adaptive, " +
-                "right_points, wrong_points) VALUES(?,?,?,?,?,?,?,?)";
+                "right_points, wrong_points, course_id) VALUES(?,?,?,?,?,?,?,?,?)";
 
         PreparedStatement statement = conn.prepareStatement(query);
         statement.setString(1, exercise.getName());
@@ -42,6 +42,7 @@ public class ExerciseModel {
         statement.setBoolean(6, exercise.getAdaptive());
         statement.setDouble(7, exercise.getPointsCorrect());
         statement.setDouble(8, exercise.getPointsIncorrect());
+        statement.setInt(9, exercise.getCourseID());
 
         statement.execute();
     }

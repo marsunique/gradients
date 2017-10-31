@@ -11,7 +11,16 @@ public class Exercise {
     private String name, policy;
     private Boolean adaptive;
     private Timestamp start, end;
-    private int numRetries;
+    private int numRetries, courseID;
+
+    public int getCourseID() {
+        return courseID;
+    }
+
+    public void setCourseID(int courseID) {
+        this.courseID = courseID;
+    }
+
     private Double pointsCorrect, pointsIncorrect;
 
     public void setName(String name){

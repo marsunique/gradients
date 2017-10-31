@@ -37,6 +37,14 @@ public class ProfExerciseController {
         System.out.print("Enter Exercise Name: ");
         exercise.setName(in.nextLine());
 
+        System.out.print("Enter Course ID: ");
+        try {
+            exercise.setCourseID(Integer.parseInt(in.nextLine()));
+        } catch (Exception e) {
+            System.out.println("Course ID must be a number.");
+            return added;
+        }
+
 
         System.out.print("Enter Number of Retries: ");
         try {
@@ -82,7 +90,7 @@ public class ProfExerciseController {
         System.out.println(" - (L)ast");
         System.out.println(" - (H)ighest");
         System.out.println(" - (A)verage");
-        System.out.print("Policy: ");
+        System.out.printf("Policy: ");
         String choice = in.nextLine();
         switch (choice.toLowerCase()) {
             case "l":
