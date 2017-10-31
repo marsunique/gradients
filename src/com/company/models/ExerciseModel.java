@@ -4,18 +4,15 @@ import com.company.objects.Exercise;
 import com.company.util.DBConnector;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 
-public class ExerciseModel {
+public class ExerciseModel extends ModelBase{
 
     private static ExerciseModel exerciseModel;
-    private static Connection conn = null;
 
     private ExerciseModel() throws IOException {
-        conn = DBConnector.getConnector().getConn();
+        super();
     }
 
     public static ExerciseModel getExerciseModel() throws IOException{

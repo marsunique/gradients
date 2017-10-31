@@ -8,20 +8,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class ProfessorModel {
+public class ProfessorModel extends ModelBase{
     private static ProfessorModel professorModel = null;
-    private static Connection conn =  null;
 
-    private ProfessorModel(){
+    private ProfessorModel() throws IOException {
+        super();
     }
 
     public static ProfessorModel getProfessorModel() throws IOException{
         if(professorModel == null) {
             professorModel = new ProfessorModel();
-        }
-
-        if (conn == null) {
-            conn = DBConnector.getConnector().getConn();
         }
 
         return professorModel;
