@@ -10,12 +10,12 @@ CREATE TABLE IF NOT EXISTS User
 );
 
 # These will only be added one time, if they don't already
-INSERT INTO Gradients.User
-VALUES ("dlambright", "dustin", "Dustin", "Lambright"),
-  ("dbhandari", "darshan", "Darshan", "Bhandari"),
-  ("ysun", "yuchen", "Yuchen", "Sun"),
-  ("lkerr", "leonard", "Leonard", "Kerr" ),
-  ("gyu", "guanxu", "Guanxu", "Yu");
+REPLACE INTO User (id, password, first_name, last_name) VALUES
+  ('dlambright', 'dustin', 'Dustin', 'Lambright'),
+  ('dbhandari', 'darshan', 'Darshan', 'Bhandari'),
+  ('ysun', 'yuchen', 'Yuchen', 'Sun'),
+  ('lkerr', 'leonard', 'Leonard', 'Kerr'),
+  ('gyu', 'guanxu', 'Guanxu', 'Yu');
 
 
 CREATE TABLE IF NOT EXISTS Graduate
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS Exercise
 CREATE TABLE IF NOT EXISTS TAFor
 (
   ta_id     VARCHAR(255) NOT NULL,
-  course_id INT          NOT NULL,
+  course_id VARCHAR(6)   NOT NULL,
   PRIMARY KEY (ta_id, course_id),
   FOREIGN KEY (ta_id) REFERENCES Graduate (grad_id),
   FOREIGN KEY (course_id) REFERENCES Course (course_id)

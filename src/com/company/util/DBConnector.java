@@ -57,7 +57,7 @@ public class DBConnector {
         return stringList.toArray(new String[stringList.size()]);
     }
 
-    public static void closeConnection(Connection conn) {
+    public static void closeConnection() {
         try {
             conn.close();
         } catch (SQLException e) {

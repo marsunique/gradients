@@ -34,14 +34,14 @@ public class UserModel {
                 ret.username = rs.getString("id");
             }
         } catch (SQLException e) {
-            DBConnector.closeConnection(conn);
+            DBConnector.closeConnection();
             e.printStackTrace();
             return null;
         }
 
         if (ret.username == null) {
             System.out.println("Username and password combination not found.");
-            DBConnector.closeConnection(conn);
+            DBConnector.closeConnection();
             return null;
         }
 
@@ -59,7 +59,7 @@ public class UserModel {
                 ret.type = UserType.INSTRUCTOR;
             }
         } catch (SQLException e) {
-            DBConnector.closeConnection(conn);
+            DBConnector.closeConnection();
             e.printStackTrace();
             return null;
         }
@@ -79,7 +79,7 @@ public class UserModel {
                     ret.type = UserType.GRADUATE;
                 }
             } catch (SQLException e) {
-                DBConnector.closeConnection(conn);
+                DBConnector.closeConnection();
                 e.printStackTrace();
                 return null;
             }
@@ -104,7 +104,7 @@ public class UserModel {
                     ret.enrolled.add(rs.getString("course_id"));
                 }
             } catch (SQLException e) {
-                DBConnector.closeConnection(conn);
+                DBConnector.closeConnection();
                 e.printStackTrace();
                 return null;
             }
@@ -124,7 +124,7 @@ public class UserModel {
                     ret.tas.add(rs.getString("course_id"));
                 }
             } catch (SQLException e) {
-                DBConnector.closeConnection(conn);
+                DBConnector.closeConnection();
                 e.printStackTrace();
                 return null;
             }
@@ -144,13 +144,12 @@ public class UserModel {
                     ret.teaches.add(rs.getString("course_id"));
                 }
             } catch (SQLException e) {
-                DBConnector.closeConnection(conn);
+                DBConnector.closeConnection();
                 e.printStackTrace();
                 return null;
             }
         }
 
-        DBConnector.closeConnection(conn);
         return ret;
     }
 }

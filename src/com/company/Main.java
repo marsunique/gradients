@@ -1,7 +1,6 @@
 package com.company;
 import com.company.util.DBConnector;
 
-import javax.jws.WebParam;
 import java.util.Scanner;
 
 

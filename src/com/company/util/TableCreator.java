@@ -43,8 +43,6 @@ public class TableCreator {
             System.err.print("Error when reading file: " + e);
         } catch (SQLException e) {
             System.err.print("Error when executing SQL: " + e);
-        } finally {
-            DBConnector.closeConnection(conn);
         }
     }
 }

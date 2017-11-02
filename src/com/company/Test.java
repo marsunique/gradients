@@ -6,6 +6,7 @@ import com.company.controller.StudentController;
 import com.company.controller.TaController;
 import com.company.models.UserModel;
 import com.company.objects.User;
+import com.company.util.DBConnector;
 import com.company.util.TableCreator;
 
 import java.io.IOException;
@@ -52,5 +53,6 @@ public class Test {
         }
 
         controller.landingPage();
+        DBConnector.closeConnection();
     }
 }
