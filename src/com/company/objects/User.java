@@ -1,11 +1,15 @@
 package com.company.objects;
 
-import com.company.UserType;
-
 import java.util.ArrayList;
 
 public class User {
-    public UserType type;
+
+    public enum Type {
+        STUDENT, GRADUATE, INSTRUCTOR;
+    }
+
+
+    public Type type;
     public String username;
     public String firstName;
     public String lastName;

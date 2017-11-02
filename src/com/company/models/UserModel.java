@@ -1,7 +1,6 @@
 package com.company.models;
 
 import com.company.objects.User;
-import com.company.UserType;
 import com.company.util.DBConnector;
 
 import java.io.IOException;
@@ -12,7 +11,7 @@ import java.sql.Statement;
 
 public class UserModel {
 
-    public static User getUser(String username, String password) throws IOException{
+    public static User getUser(String username, String password) throws IOException {
         User ret = User.getUser();
 
         Connection conn = DBConnector.getConnector().getConn();
@@ -56,7 +55,7 @@ public class UserModel {
             ResultSet rs = stmt.executeQuery(query);
             if (rs.first()) {
                 // User is an instructor!
-                ret.type = UserType.INSTRUCTOR;
+                ret.type = User.Type.INSTRUCTOR;
             }
         } catch (SQLException e) {
             DBConnector.closeConnection();
@@ -76,7 +75,7 @@ public class UserModel {
                 ResultSet rs = stmt.executeQuery(query);
                 if (rs.first()) {
                     // User is an instructor!
-                    ret.type = UserType.GRADUATE;
+                    ret.type = User.Type.GRADUATE;
                 }
             } catch (SQLException e) {
                 DBConnector.closeConnection();
@@ -87,11 +86,11 @@ public class UserModel {
 
         // Type still hasn't been found, assume student
         if (ret.type == null) {
-            ret.type = UserType.STUDENT;
+            ret.type = User.Type.STUDENT;
         }
 
         // Get courses enrolled in
-        if (ret.type == UserType.STUDENT || ret.type == UserType.GRADUATE) {
+        if (ret.type == User.Type.STUDENT || ret.type == User.Type.GRADUATE) {
             query =
                     "SELECT *" +
                             "FROM EnrolledIn" +
@@ -111,7 +110,7 @@ public class UserModel {
         }
 
         // Get courses TAing for
-        if (ret.type == UserType.GRADUATE) {
+        if (ret.type == User.Type.GRADUATE) {
             query =
                     "SELECT *" +
                             "FROM TAFor" +
@@ -131,7 +130,7 @@ public class UserModel {
         }
 
         // Get courses teaching
-        if (ret.type == UserType.INSTRUCTOR) {
+        if (ret.type == User.Type.INSTRUCTOR) {
             query =
                     "SELECT *" +
                             "FROM Course" +
