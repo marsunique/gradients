@@ -17,14 +17,12 @@ public class TopicModel extends ModelBase {
         return topicModel;
     }
 
-    public void listTopics() throws SQLException {
+    public ResultSet listTopics() throws SQLException {
         String query = "SELECT * FROM Topic";
         PreparedStatement statement = conn.prepareStatement(query);
         ResultSet rs = statement.executeQuery();
-        while (rs.next()) {
-            System.out.println("Topic ID: " + rs.getInt("topic_id")
-            + "Topic Name: " + rs.getString("name"));
-        }
+
+        return rs;
     }
 
     public void addTopic(String topicName) throws SQLException {

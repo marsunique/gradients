@@ -12,7 +12,7 @@ public class QuestionModel extends ModelBase {
         super();
     }
 
-    private static QuestionModel getQuestionModen() throws IOException, SQLException {
+    public static QuestionModel getQuestionModel() throws IOException, SQLException {
         if (questionModel == null) {
             questionModel = new QuestionModel();
         }
