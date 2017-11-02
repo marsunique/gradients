@@ -1,13 +1,20 @@
 package com.company.controller;
 
+import com.company.objects.User;
+
 import java.util.Scanner;
 
 public class ProfessorController implements Controller {
     private static ProfessorController instance = null;
     Scanner scan = new Scanner(System.in);
+    User prof = null;
 
     // empty constructor
     private ProfessorController() {
+    }
+
+    public void setUser(User u){
+        prof = u;
     }
 
     public static ProfessorController getInstance() {
@@ -32,7 +39,7 @@ public class ProfessorController implements Controller {
             System.out.println("7 Search/Add Questions To Question Bank");
             System.out.println("8 Add/Remove Questions From Exercises");
             System.out.println("9 Log Out");
-            System.out.println("Please enter corresponding command #");
+            System.out.print("Please enter corresponding command #: ");
             String commandNo = scan.nextLine();
             switch (commandNo) {
                 case "1":
@@ -72,6 +79,32 @@ public class ProfessorController implements Controller {
     }
 
     public void courseViewAdd() {
+        while (true) {
+            System.out.println("Enter one of the following options:");
+            System.out.println(" - The ID of An Existing Course");
+            System.out.println(" - 'N' to Add a New Course");
+            System.out.println(" - 'Q' to Return");
+            String input = scan.nextLine().toUpperCase();
+            switch (input) {
+                case "Q":
+                    return;
+                case "N":
+                    break;
+                default:
+                    if (input.matches("^[a-zA-Z]{3}\\d{3}$")) {
+
+
+                        if(prof.teaches.contains(input)){
+                            System.out.println("That course is called " + input);
+                        } else {
+                            System.out.println("This course does not exist.");
+                        }
+                    } else {
+                        System.out.println("That is not a valid course title.");
+                    }
+                    break;
+            }
+        }
 
     }
 
