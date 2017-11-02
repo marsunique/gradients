@@ -16,4 +16,9 @@ public class Course {
     public ArrayList<Integer> exerciseIds;
     public ArrayList<String> exerciseNames;
 
+    public Course(){
+        exerciseNames = new ArrayList<>();
+        exerciseIds = new ArrayList<>();
+    }
+
 }
