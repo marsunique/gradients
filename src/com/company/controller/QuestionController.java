@@ -1,10 +1,12 @@
 package com.company.controller;
 
-public class QuestionController {
+import com.company.objects.User;
+
+public class QuestionController extends AbsController{
 
     private static QuestionController questionController = null;
     private QuestionController() {
-
+        super();
     }
 
     public static QuestionController getQuestionController() {
@@ -15,6 +17,16 @@ public class QuestionController {
     }
 
     public void addQuestion() {
+
+    }
+
+    @Override
+    public void landingPage() {
+
+    }
+
+    @Override
+    public void setUser(User u) {
 
     }
 }
