@@ -14,10 +14,14 @@ public class CourseModel extends ModelBase {
         super();
     }
 
-    public static CourseModel getCourseModel() throws IOException {
+    public static CourseModel getCourseModel() {
 
         if (courseModel == null) {
-            courseModel = new CourseModel();
+            try {
+                courseModel = new CourseModel();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         return courseModel;
@@ -37,7 +41,7 @@ public class CourseModel extends ModelBase {
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
                 ret.id = rs.getString("course_id");
-                ret.name = rs.getString("name");
+                ret.name = rs.getString("course_name");
                 ret.start = rs.getDate("start_date");
                 ret.end = rs.getDate("end_date");
                 ret.instructor = rs.getString("inst_id");
@@ -56,7 +60,7 @@ public class CourseModel extends ModelBase {
 
         query = "SELECT * " +
                 "FROM Exercise " +
-                "WHERE course_id='" + id + "'";
+                "WHERE course_id='" + id + "';";
 
         try {
             stmt = conn.createStatement();

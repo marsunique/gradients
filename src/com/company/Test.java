@@ -51,6 +51,7 @@ public class Test {
                     break;
             }
 
+            controller.setUser(guy);
             controller.landingPage();
 
         } else {
