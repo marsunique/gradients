@@ -1,12 +1,12 @@
 package com.company.util;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class DBConnector {
     private final String url = "jdbc:mysql://localhost:3306/gradients";
@@ -46,27 +46,15 @@ public class DBConnector {
     }
 
     private String[] getUnameandPassword() throws IOException {
-        String filePath = new File("").getAbsolutePath();
 
-        try(BufferedReader br = new BufferedReader(new FileReader("src/com/company/password.txt"))) {
-            StringBuilder sb = new StringBuilder();
-            String line = br.readLine();
+        Scanner in = new Scanner(new File("src/com/company/password.txt"));
+        ArrayList<String> stringList = new ArrayList<>();
 
-            while (line != null) {
-                sb.append(line);
-                sb.append(System.lineSeparator());
-                line = br.readLine();
-            }
-            String everything = sb.toString();
-            String[] stringArray = everything.split("\n");
-
-            return stringArray;
+        while(in.hasNext()){
+            stringList.add(in.nextLine());
         }
-        catch (IOException ex)
-        {
-            System.out.println(ex.toString());
-            throw ex;
-        }
+
+        return stringList.toArray(new String[stringList.size()]);
     }
 
     public static void closeConnection(Connection conn) {
