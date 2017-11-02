@@ -7,12 +7,12 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class StudentModel extends ModelBase {
-    StudentModel studentModel = null;
+    private static StudentModel studentModel = null;
     private StudentModel() throws IOException {
         super();
     }
 
-    public StudentModel getStudentModel() throws IOException {
+    public static StudentModel getStudentModel() throws IOException {
         if(studentModel == null) {
             studentModel = new StudentModel();
         }
