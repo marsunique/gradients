@@ -30,29 +30,29 @@ public class Test {
 
         PrintStream o = System.out;
 
-        assert guy != null;
+        if (guy != null) {
 
-        o.println("Name: " + guy.firstName + " " + guy.lastName);
-        o.println("Role: " + guy.type.toString());
-        o.println("Teaches: " + guy.teaches.toString());
-        o.println("TAs: " + guy.tas.toString());
-        o.println("Enrolled: " + guy.enrolled.toString());
+            o.println("Login Successful!");
 
-        Controller controller = null;
+            Controller controller = null;
 
-        switch (guy.type){
-            case GRADUATE:
-                controller = TaController.getInstance();
-                break;
-            case STUDENT:
-                controller = StudentController.getInstance();
-                break;
-            case INSTRUCTOR:
-                controller = ProfessorController.getInstance();
-                break;
+            switch (guy.type) {
+                case GRADUATE:
+                    controller = TaController.getInstance();
+                    break;
+                case STUDENT:
+                    controller = StudentController.getInstance();
+                    break;
+                case INSTRUCTOR:
+                    controller = ProfessorController.getInstance();
+                    break;
+            }
+
+            controller.landingPage();
+
+        } else {
+            o.println("Login unsuccessful. Rerun program to try again.");
         }
-
-        controller.landingPage();
         DBConnector.closeConnection();
     }
 }

@@ -11,17 +11,32 @@ import java.sql.Statement;
 
 public class UserModel {
 
+    private static String loginQuery(String username, String password) throws IOException {
+        return "SELECT * " +
+                "FROM User" +
+                " WHERE id='" + username + "'" +
+                " AND password='" + password + "';";
+
+    }
+
+    private static String userByIdQuery(String username) throws IOException {
+        return "SELECT * " +
+                "FROM User" +
+                " WHERE id='" + username + "'";
+    }
+
     public static User getUser(String username, String password) throws IOException {
         User ret = User.getUser();
 
         Connection conn = DBConnector.getConnector().getConn();
         Statement stmt = null;
 
-        String query =
-                "SELECT * " +
-                        "FROM User" +
-                        " WHERE id='" + username + "'" +
-                        " AND password='" + password + "';";
+        String query = null;
+        if(password == null){
+            query = userByIdQuery(username);
+        } else {
+            query = loginQuery(username, password);
+        }
 
         // See if the user can log in
         try {
@@ -33,14 +48,11 @@ public class UserModel {
                 ret.username = rs.getString("id");
             }
         } catch (SQLException e) {
-            DBConnector.closeConnection();
             e.printStackTrace();
             return null;
         }
 
         if (ret.username == null) {
-            System.out.println("Username and password combination not found.");
-            DBConnector.closeConnection();
             return null;
         }
 
@@ -58,7 +70,6 @@ public class UserModel {
                 ret.type = User.Type.INSTRUCTOR;
             }
         } catch (SQLException e) {
-            DBConnector.closeConnection();
             e.printStackTrace();
             return null;
         }
@@ -78,7 +89,6 @@ public class UserModel {
                     ret.type = User.Type.GRADUATE;
                 }
             } catch (SQLException e) {
-                DBConnector.closeConnection();
                 e.printStackTrace();
                 return null;
             }
@@ -103,7 +113,6 @@ public class UserModel {
                     ret.enrolled.add(rs.getString("course_id"));
                 }
             } catch (SQLException e) {
-                DBConnector.closeConnection();
                 e.printStackTrace();
                 return null;
             }
@@ -123,7 +132,6 @@ public class UserModel {
                     ret.tas.add(rs.getString("course_id"));
                 }
             } catch (SQLException e) {
-                DBConnector.closeConnection();
                 e.printStackTrace();
                 return null;
             }
@@ -143,7 +151,6 @@ public class UserModel {
                     ret.teaches.add(rs.getString("course_id"));
                 }
             } catch (SQLException e) {
-                DBConnector.closeConnection();
                 e.printStackTrace();
                 return null;
             }
