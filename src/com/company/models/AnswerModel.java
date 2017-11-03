@@ -23,8 +23,8 @@ public class AnswerModel extends ModelBase {
     public void addAnswer(Answer answer) throws SQLException {
         String query = "INSERT INTO Answer(text, ques_id) VALUES(?,?)";
         PreparedStatement statement = conn.prepareStatement(query);
-        statement.setString(1, answer.getText());
-        statement.setInt(2, answer.getQuesID());
+        statement.setString(1, answer.text);
+        statement.setInt(2, answer.quesID);
 
         statement.execute();
     }

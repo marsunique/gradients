@@ -41,7 +41,7 @@ public class QuestionController extends AbsController{
             System.out.println("ERROR:" + e.getMessage());
         }
         System.out.print("Please Enter Question Topic ID: ");
-        question.setTopicID(Integer.parseInt(scanner.nextLine()));
+        question.topicID = Integer.parseInt(scanner.nextLine());
 
         System.out.print("Please Enter Difficulty(1-5): ");
         int difficulty = Integer.parseInt(scanner.nextLine());
@@ -51,23 +51,23 @@ public class QuestionController extends AbsController{
             return;
         }
 
-        question.setDifficulty(difficulty);
+        question.difficulty = difficulty;
 
         System.out.print("Please Enter Question text: ");
-        question.setText(scanner.nextLine());
+        question.text = scanner.nextLine();
 
         System.out.print("Please Enter Question hint: ");
-        question.setHint(scanner.nextLine());
+        question.hint = scanner.nextLine();
 
         System.out.print("Please Enter Question solution: ");
-        question.setSolution(scanner.nextLine());
+        question.solution = scanner.nextLine();
 
 
-        System.out.println("Question topic id: " + question.getTopicID());
-        System.out.println("Question difficulty: " + question.getDifficulty());
-        System.out.println("Question text: " + question.getText());
-        System.out.println("Question hint: " + question.getHint());
-        System.out.println("Question solution: " + question.getSolution());
+        System.out.println("Question topic id: " + question.topicID);
+        System.out.println("Question difficulty: " + question.difficulty);
+        System.out.println("Question text: " + question.text);
+        System.out.println("Question hint: " + question.hint);
+        System.out.println("Question solution: " + question.solution);
 
         try {
             QuestionModel.getQuestionModel().addQuestion(question);

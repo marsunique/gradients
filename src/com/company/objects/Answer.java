@@ -1,22 +1,14 @@
 package com.company.objects;
 
+import java.util.ArrayList;
+
 public class Answer {
-    private String text;
-    private int quesID;
+    public String text, explanation;
+    public int quesID, ansID, paramID;
+    public boolean correct;
+    public ArrayList<String> paramVals;
 
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public int getQuesID() {
-        return quesID;
-    }
-
-    public void setQuesID(int quesID) {
-        this.quesID = quesID;
+    public Answer (){
+        paramVals = new ArrayList<>();
     }
 }
