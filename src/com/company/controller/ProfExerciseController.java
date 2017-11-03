@@ -7,6 +7,7 @@ import com.company.util.DBConnector;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Scanner;
@@ -50,7 +51,7 @@ public class ProfExerciseController {
 
         System.out.print("Enter Course ID: ");
         try {
-            exercise.setCourseID(Integer.parseInt(in.nextLine()));
+            exercise.setCourseID(in.nextLine());
         } catch (Exception e) {
             System.out.println("Course ID must be a number.");
             return added;
@@ -65,17 +66,17 @@ public class ProfExerciseController {
             return added;
         }
 
-        System.out.print("Enter Start Date/Time (yyyy-MM-dd HH:mm:ss): ");
+        System.out.print("Enter Start Date/Time (yyyy-MM-dd): ");
         try {
-            exercise.setStartDate(Timestamp.valueOf(in.nextLine()));
+            exercise.setStartDate(Date.valueOf(in.nextLine()));
         } catch (Exception e) {
             System.out.println("Improperly formatted date.");
             return added;
         }
 
-        System.out.print("Enter End Date/Time(yyyy-MM-dd HH:mm:ss): ");
+        System.out.print("Enter End Date/Time(yyyy-MM-dd): ");
         try {
-            exercise.setEndDate(Timestamp.valueOf(in.nextLine()));
+            exercise.setEndDate(Date.valueOf(in.nextLine()));
         } catch (Exception e) {
             System.out.println("Improperly formatted date.");
             return added;
@@ -83,7 +84,7 @@ public class ProfExerciseController {
 
         System.out.print("Enter Points Per Correct Answer: ");
         try {
-            exercise.setPointsCorrect(Double.parseDouble(in.nextLine()));
+            exercise.setPointsCorrect(Float.parseFloat(in.nextLine()));
         } catch (Exception e) {
             System.out.println("Points must be a number.");
             return added;
@@ -91,7 +92,7 @@ public class ProfExerciseController {
 
         System.out.print("Enter Points Per Incorrect Answer: ");
         try {
-            exercise.setPointsIncorrect(Double.parseDouble(in.nextLine()));
+            exercise.setPointsIncorrect(Float.parseFloat(in.nextLine()));
         } catch (Exception e) {
             System.out.println("Points must be a number.");
             return added;
@@ -156,7 +157,7 @@ public class ProfExerciseController {
         return added;
     }
 
-    public void deleteExercise() throws SQLException, IOException{
+    public void deleteExercise() throws SQLException, IOException {
         int exID, courseID;
 
         System.out.println("-------------------");

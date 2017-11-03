@@ -1,30 +1,15 @@
 package com.company.objects;
 
+import java.util.ArrayList;
+
 public class Student {
-    private String studentID;
-    private String firstName, lastName;
+    public String studentID;
+    public String firstName, lastName;
+    public String courseID;
+    public ArrayList<Float> exAttempts;
 
-    public String getStudentID() {
-        return studentID;
+    public Student(){
+        exAttempts = new ArrayList<>();
     }
 
-    public void setStudentID(String studentID) {
-        this.studentID = studentID;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 }
