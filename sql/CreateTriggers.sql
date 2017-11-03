@@ -33,3 +33,13 @@ FOR EACH ROW
     SET num_enrolled = num_enrolled - 1
     WHERE course_id = OLD.course_id;
   END;
+
+CREATE TRIGGER CourseID
+BEFORE INSERT ON course
+  FOR EACH ROW
+  BEGIN
+    IF(NEW.course_id NOT LIKE '[a-zA-Z][a-zA-Z][a-zA-Z][1-9][1-9][1-9]')
+      THEN
+      SIGNAL SQL
+    END IF;
+  END;
