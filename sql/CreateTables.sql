@@ -9,15 +9,6 @@ CREATE TABLE IF NOT EXISTS User
   PRIMARY KEY (id)
 );
 
-# These will only be added one time, if they don't already
-REPLACE INTO User (id, password, first_name, last_name) VALUES
-  ('dlambright', 'dustin', 'Dustin', 'Lambright'),
-  ('dbhandari', 'darshan', 'Darshan', 'Bhandari'),
-  ('ysun', 'yuchen', 'Yuchen', 'Sun'),
-  ('lkerr', 'leonard', 'Leonard', 'Kerr'),
-  ('gyu', 'guanxu', 'Guanxu', 'Yu');
-
-
 CREATE TABLE IF NOT EXISTS Graduate
 (
   grad_id VARCHAR(255) NOT NULL,

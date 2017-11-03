@@ -24,12 +24,14 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         System.out.println("GRADY-ENTS");
         System.out.print("Login ID: ");
-        String username = scanner.next();
+        //String username = scanner.next();
 
         System.out.print("Password: ");
-        String password = scanner.next();
+        //String password = scanner.next();
 
-        User guy = UserModel.getUser(username, password);
+        //Dustin got sick of entering his username/password ever time....
+        //User guy = UserModel.getUser(username, password);
+        User guy = UserModel.getUser("mfisher", "mfisher");
 
         PrintStream o = System.out;
 
@@ -60,14 +62,5 @@ public class Main {
         DBConnector.closeConnection();
 
     }
-
-    public static void adminLogin(String username, String password){
-        if (Model.checkProfessorPassword(username, password)){
-
-            System.out.println("Login successful!");
-            professorPage.professorPage();
-        }
-    }
-
 
 }
