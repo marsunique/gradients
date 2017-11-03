@@ -31,5 +31,5 @@ FOR EACH ROW
   BEGIN
     UPDATE Course
     SET num_enrolled = num_enrolled - 1
-    WHERE course_id = NEW.course_id;
+    WHERE course_id = OLD.course_id;
   END;
