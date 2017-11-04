@@ -49,9 +49,9 @@ INSERT INTO Topic (topic_id, name) VALUES
   (11, 'Introduction to Database Design');
 
 INSERT INTO Course (course_id, course_name, start_date, end_date, inst_id, graduate, max_enrolled, num_enrolled) VALUES
-  ('CSC440', 'Database Systems', '2017-08-27', '2017-12-12', 'rchirkova', FALSE, 5, 3),
-  ('CSC540', 'Database Systems', '2017-08-25', '2017-12-10', 'kogan', TRUE, 5, 3),
-  ('CSC541', 'Advanced Data Structures', '2017-08-25', '2017-12-06', 'chealey', TRUE, 5, 3);
+  ('CSC440', 'Database Systems', '2017-08-27', '2017-12-12', 'rchirkova', FALSE, 5, 0),
+  ('CSC540', 'Database Systems', '2017-08-25', '2017-12-10', 'kogan', TRUE, 5, 0),
+  ('CSC541', 'Advanced Data Structures', '2017-08-25', '2017-12-06', 'chealey', TRUE, 5, 0);
 
 INSERT INTO EnrolledIn (student_id, course_id) VALUES
   ('tregan', 'CSC440'),
