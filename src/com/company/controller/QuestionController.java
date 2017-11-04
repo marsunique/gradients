@@ -5,7 +5,12 @@ import com.company.models.TopicModel;
 import com.company.objects.Question;
 import com.company.objects.User;
 
+import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 
 public class QuestionController extends AbsController{
 
@@ -21,7 +26,7 @@ public class QuestionController extends AbsController{
         return questionController;
     }
 
-    public void addQuestion() {
+    public void createQuestion(String courseID) {
         Question question = new Question();
         System.out.println("-------------------");
         System.out.println(" Question Creation");
@@ -30,11 +35,11 @@ public class QuestionController extends AbsController{
         System.out.println("Below is the topics list");
 
         try {
-            ResultSet topics = TopicModel.getTopicModel().listTopics();
+            Map<Integer, String> topics = CourseController.getCourseController().listCourseTopics(courseID);
 
-            while (topics.next()) {
-                System.out.println("Topic ID: " + topics.getInt("topic_id")
-                        + " Topic Name: " + topics.getString("name"));
+            for(Integer topicID : topics.keySet()) {
+                System.out.println("Topic ID: " + topicID
+                        + " Topic Name: " + topics.get(topicID));
             }
 
         }catch (Exception e) {
@@ -121,6 +126,20 @@ public class QuestionController extends AbsController{
             }
         }
     }
+
+    public List<Question> getQuestionsFromTopic(int topicID) throws IOException, SQLException {
+
+        List<Question> quesList = QuestionModel.getQuestionModel().getQuestionsByTopic(topicID);
+
+        for (Question question : quesList) {
+            System.out.println("Question ID : " + question.getQuestionID());
+            System.out.println("Text: " + question.getDifficulty());
+            System.out.println();
+        }
+
+        return quesList;
+    }
+
 
     @Override
     public void landingPage() {
