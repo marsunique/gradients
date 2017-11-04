@@ -11,8 +11,13 @@ import com.company.objects.User;
 
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Scanner;
+import java.text.DateFormat;
+
 
 import static java.lang.System.out;
 
@@ -107,7 +112,7 @@ public class ProfessorController implements Controller {
         while (true) {
             out.println();
             out.println("Enter one of the following options:");
-            out.println("1 Search Course");
+            out.println("1 View Course");
             out.println("2 Add Course");
             out.println("3 Return");
             out.print("Command #: ");
@@ -131,16 +136,62 @@ public class ProfessorController implements Controller {
 
     private void addCourse() {
         Course c = new Course();
-        String input;
+        int input;
+        String startDate,endDate;
+        Date utilstartDate = new Date();
+        Date utilendDate = new Date();
+
 
         out.print("Enter a course id (Ex. CSC440): ");
-        input = scan.nextLine();
         c.id = scan.nextLine();
 
 
         out.print("Enter a course name: ");
+        c.name=scan.nextLine();
+
         out.print("Enter a start date (yyyy-MM-dd): ");
+        startDate=scan.nextLine();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            utilstartDate = (Date)formatter.parse(startDate);
+            c.start = new java.sql.Date(utilstartDate.getTime());
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
         out.print("Enter an end date (yyyy-MM-dd): ");
+        endDate=scan.nextLine();
+        try {
+            utilendDate = (Date)formatter.parse(endDate);
+            c.end = new java.sql.Date(utilendDate.getTime());
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        out.println("Enter the instructor id:");
+        c.instructor=scan.nextLine();
+
+        out.println("Enter whether this is a graduate course or not :");
+        out.println("Enter 1 if it is a graduate course, else enter if its 0");
+        input = scan.nextInt();
+        if(input==0)
+            c.graduate=false;
+        else
+            c.graduate=true;
+
+        out.println("Enter the maximum no. of students that can enroll:");
+        c.maxEnrolled=scan.nextInt();
+
+        try {
+            ProfessorModel.getProfessorModel().courseAdd(c.id,c.name,c.start,c.end,c.instructor,input,c.maxEnrolled);
+            out.println("You have successfully created a new course");
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e.getMessage());
+        }
+
         //TAs
         //Students
         //Topics
@@ -272,7 +323,19 @@ public class ProfessorController implements Controller {
     }
 
     private void setupTA() {
+        Student s = new Student();
+        out.print("Enter a student id: ");
+        s.studentID = scan.nextLine();
+        out.print("Enter a course id for which the student would be TA for: ");
+        s.courseID = scan.nextLine();
 
+        try {
+            ProfessorModel.getProfessorModel().setupTA(s.studentID,s.courseID);
+            System.out.println("You have successfully added "+ s.studentID+ " as TA for "+s.courseID );
+            return;
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e.getMessage());
+        }
     }
 
     private void exerciseViewAdd() {

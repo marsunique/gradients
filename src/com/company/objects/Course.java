@@ -1,7 +1,7 @@
 package com.company.objects;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 
 public class Course {
 
@@ -10,7 +10,7 @@ public class Course {
     public Date start;
     public Date end;
     public String instructor;
-    public Boolean graduate;
+    public boolean graduate;
     public int maxEnrolled;
     public int numEnrolled;
     public ArrayList<Integer> exerciseIds;
