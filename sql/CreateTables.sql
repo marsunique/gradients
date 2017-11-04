@@ -12,18 +12,21 @@ CREATE TABLE IF NOT EXISTS User
 CREATE TABLE IF NOT EXISTS Graduate
 (
   grad_id VARCHAR(255) NOT NULL,
+  PRIMARY KEY (grad_id),
   FOREIGN KEY (grad_id) REFERENCES User (id)
 );
 
 CREATE TABLE IF NOT EXISTS Instructor
 (
   inst_id VARCHAR(255) NOT NULL,
+  PRIMARY KEY (inst_id),
   FOREIGN KEY (inst_id) REFERENCES User (id)
 );
 
 CREATE TABLE IF NOT EXISTS Student
 (
   student_id VARCHAR(255) NOT NULL,
+  PRIMARY KEY (student_id),
   FOREIGN KEY (student_id) REFERENCES User (id)
 );
 
@@ -32,7 +35,7 @@ CREATE TABLE IF NOT EXISTS Course
   course_id    VARCHAR(6)   NOT NULL,
   course_name  VARCHAR(255) NOT NULL,
   start_date   DATE         NOT NULL,
-  end_date     DATE         NOT NULL,
+  end_date     DATE         NOT NULL CHECK (start_date <= end_date),
   inst_id      VARCHAR(255) NOT NULL,
   graduate     BOOL DEFAULT FALSE,
   max_enrolled INT          NOT NULL,
@@ -110,7 +113,7 @@ CREATE TABLE IF NOT EXISTS Question
 CREATE TABLE IF NOT EXISTS Parameters
 (
   param_id   INT NOT NULL AUTO_INCREMENT,
-  param_vals TEXT,
+  param_vals TEXT NOT NULL,
   ques_id    INT NOT NULL,
   PRIMARY KEY (param_id, ques_id),
   FOREIGN KEY (ques_id) REFERENCES Question (ques_id)
@@ -137,7 +140,7 @@ CREATE TABLE IF NOT EXISTS Attempt
   ex_id      INT          NOT NULL,
   course_id  VARCHAR(6)   NOT NULL,
   PRIMARY KEY (att_id),
-  FOREIGN KEY (student_id) REFERENCES Student (student_id),
+  FOREIGN KEY (student_id) REFERENCES Student (student_id) ON DELETE CASCADE,
   FOREIGN KEY (ex_id, course_id) REFERENCES Exercise (ex_id, course_id) ON DELETE CASCADE
 );
 
@@ -146,10 +149,10 @@ CREATE TABLE IF NOT EXISTS AttAnswers
 (
   att_id   INT NOT NULL,
   ques_id  INT NOT NULL,
-  param_id INT NOT NULL,
   ans_id   INT NOT NULL,
+  PRIMARY KEY(att_id, ques_id, ans_id),
   FOREIGN KEY (ans_id, ques_id) REFERENCES Answer (ans_id, ques_id),
-  FOREIGN KEY (param_id, ques_id) REFERENCES Parameters (param_id, ques_id)
+  FOREIGN KEY (att_id) REFERENCES Attempt (att_id)
 );
 
 CREATE TABLE IF NOT EXISTS ExQuestions
