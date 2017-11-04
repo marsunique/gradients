@@ -49,9 +49,9 @@ INSERT INTO Topic (topic_id, name) VALUES
   (11, 'Introduction to Database Design');
 
 INSERT INTO Course (course_id, course_name, start_date, end_date, inst_id, graduate, max_enrolled, num_enrolled) VALUES
-  ('CSC440', 'Database Systems', '2017-08-27', '2017-12-12', 'rchirkova', FALSE, 5, 3),
-  ('CSC540', 'Database Systems', '2017-08-25', '2017-12-10', 'kogan', TRUE, 5, 3),
-  ('CSC541', 'Advanced Data Structures', '2017-08-25', '2017-12-06', 'chealey', TRUE, 5, 3);
+  ('CSC440', 'Database Systems', '2017-08-27', '2017-12-12', 'rchirkova', FALSE, 5, 0),
+  ('CSC540', 'Database Systems', '2017-08-25', '2017-12-10', 'kogan', TRUE, 5, 0),
+  ('CSC541', 'Advanced Data Structures', '2017-08-25', '2017-12-06', 'chealey', TRUE, 5, 0);
 
 INSERT INTO EnrolledIn (student_id, course_id) VALUES
   ('tregan', 'CSC440'),
@@ -60,6 +60,7 @@ INSERT INTO EnrolledIn (student_id, course_id) VALUES
   ('aneela', 'CSC540'),
   ('mjones', 'CSC540'),
   ('jmick', 'CSC540'),
+  ('jmoyer', 'CSC540'),
   ('aneela', 'CSC541'),
   ('mjones', 'CSC541'),
   ('jmick', 'CSC541');
@@ -141,12 +142,15 @@ INSERT INTO Attempt (score, student_id, ex_id, course_id) VALUES
   (5.0, 'mjones', 1, 'CSC540'),
   (9.0, 'mjones', 1, 'CSC540'),
   (9.0, 'jmick', 1, 'CSC540'),
+  (9.0, 'jmoyer', 1, 'CSC540'),
   (7.0, 'aneela', 2, 'CSC540'),
   (12.0, 'aneela', 2, 'CSC540'), # Note that in the Sample Data it says "thrice" but only gives these entries
   (3.0, 'mjones', 2, 'CSC540'),
   (7.0, 'mjones', 2, 'CSC540'),
+  (12.0, 'jmoyer', 2, 'CSC540'),
   (8.0, 'aneela', 3, 'CSC540'),
   (4.0, 'aneela', 3, 'CSC540'),
   (12.0, 'aneela', 3, 'CSC540'),
   (8.0, 'mjones', 3, 'CSC540'),
-  (12.0, 'mjones', 3, 'CSC540')
+  (12.0, 'mjones', 3, 'CSC540'),
+  (12.0, 'jmoyer', 3, 'CSC540');
