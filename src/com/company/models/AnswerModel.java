@@ -5,6 +5,7 @@ import com.company.objects.Answer;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Types;
 
 public class AnswerModel extends ModelBase {
     private static AnswerModel answerModel = null;
@@ -21,11 +22,17 @@ public class AnswerModel extends ModelBase {
     }
 
     public void addAnswer(Answer answer) throws SQLException {
-        String query = "INSERT INTO Answer(text, ques_id) VALUES(?,?)";
+        String query = "INSERT INTO Answer(text,explanation,correct, ques_id, param_id) VALUES(?,?,?,?,?)";
         PreparedStatement statement = conn.prepareStatement(query);
         statement.setString(1, answer.getText());
-        statement.setInt(2, answer.getQuesID());
-
+        statement.setString(2, answer.getExplanation());
+        statement.setInt(3, answer.getCorrect());
+        statement.setInt(4, answer.getQuesID());
+        if (answer.getParameterID() == 0) {
+            statement.setNull(5, Types.INTEGER);
+        } else {
+            statement.setInt(5, answer.getParameterID());
+        }
         statement.execute();
     }
 
