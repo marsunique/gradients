@@ -3,11 +3,14 @@ package com.company.controller;
 import com.company.models.CourseModel;
 import com.company.models.StudentModel;
 import com.company.models.UserModel;
+import com.company.models.ProfessorModel;
 import com.company.objects.Course;
 import com.company.objects.Exercise;
 import com.company.objects.Student;
 import com.company.objects.User;
 
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Scanner;
 
@@ -171,6 +174,59 @@ public class ProfessorController implements Controller {
     }
 
     private void studentEnrollDrop() {
+        while (true) {
+            out.println();
+            out.println("Enter one of the following options:");
+            out.println("1 Add a Student");
+            out.println("2 Drop a Student");
+            out.println("3 Return");
+            out.print("Command #: ");
+            String input = scan.nextLine().toUpperCase();
+            switch (input) {
+                case "3":
+                    return;
+                case "2":
+                    dropStudent();
+                    break;
+                case "1":
+                    addStudent();
+                    break;
+                default:
+                    out.println("Invalid command, try again.");
+                    break;
+            }
+        }
+    }
+
+    private void addStudent()  {
+        Student s = new Student();
+        out.print("Enter a student id: ");
+        s.studentID = scan.nextLine();
+        out.print("Enter a course id: ");
+        s.courseID = scan.nextLine();
+
+        try {
+            ProfessorModel.getProfessorModel().enrollStudent(s.studentID,s.courseID);
+            System.out.println("You have successfully enrolled the student with ID "+ s.studentID+ " for the course "+s.courseID );
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e.getMessage());
+        }
+
+    }
+
+    private void dropStudent(){
+        Student s = new Student();
+        out.print("Enter a student id: ");
+        s.studentID = scan.nextLine();
+        out.print("Enter a course id: ");
+        s.courseID = scan.nextLine();
+
+        try {
+            ProfessorModel.getProfessorModel().studentEnrollDrop(s.studentID,s.courseID);
+            System.out.println("You have successfully dropped the course "+ s.courseID+ " for student with ID "+s.studentID );
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e.getMessage());
+        }
 
     }
 

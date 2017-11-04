@@ -56,5 +56,48 @@ public class Test {
 //        }
 //        DBConnector.closeConnection();
 
+
+        TableCreator.resetDB();
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("GRADY-ENTS");
+        System.out.print("Login ID: ");
+        String username = scanner.next();
+
+        System.out.print("Password: ");
+        String password = scanner.next();
+
+        User guy = UserModel.getUser(username, password);
+
+        PrintStream o = System.out;
+
+        if (guy != null) {
+
+            o.println("Login Successful!");
+
+            Controller controller = null;
+
+            switch (guy.type) {
+                case GRADUATE:
+                    controller = TaController.getInstance();
+                    controller.setUser(guy);
+                    break;
+                case STUDENT:
+                    controller = StudentController.getInstance();
+                    controller.setUser(guy);
+                    break;
+                case INSTRUCTOR:
+                    controller = ProfessorController.getInstance();
+                    controller.setUser(guy);
+                    break;
+            }
+
+            controller.landingPage();
+
+        } else {
+            o.println("Login unsuccessful. Rerun program to try again.");
+        }
+        //DBConnector.closeConnection();
+
     }
 }

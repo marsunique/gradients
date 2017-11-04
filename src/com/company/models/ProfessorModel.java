@@ -42,17 +42,17 @@ public class ProfessorModel extends ModelBase{
 
     }
 
-    public void enrollStudent(String studentID, int courseID) throws SQLException {
+    public void enrollStudent(String studentID, String courseID) throws SQLException {
         Statement statement = conn.createStatement();
         String query = "INSERT INTO EnrolledIn(student_id, course_id) VALUES('"+
-                studentID + "'," + courseID +")";
+                studentID + "','" + courseID +"')";
         statement.executeUpdate(query);
     }
 
-    public void studentEnrollDrop(String studentID, int courseID) throws SQLException {
+    public void studentEnrollDrop(String studentID, String courseID) throws SQLException {
         Statement statement = conn.createStatement();
         String query = "DELETE FROM EnrolledIn WHERE student_id = '" + studentID + "' AND " +
-                "course_id = " + courseID + ";";
+                "course_id = '" + courseID + "';";
         statement.executeUpdate(query);
     }
 
