@@ -90,6 +90,14 @@ public class QuestionModel extends ModelBase {
         return ret;
     }
 
+    public ResultSet getQuestionsByTopic(int topicID) throws SQLException {
+        String query = "SELECT * FROM Question WHERE topic_id = ?";
+        PreparedStatement preparedStatement = conn.prepareStatement(query);
+        preparedStatement.setInt(1, topicID);
+
+        return preparedStatement.executeQuery();
+    }
+
     public int addQuestion(Question question) throws SQLException {
         String query = "INSERT INTO Question(topic_id, text, hint, difficulty, solution)" +
                 "VALUES(?,?,?,?,?)";
