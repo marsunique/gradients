@@ -108,12 +108,27 @@ public class QuestionModel extends ModelBase {
         return ret;
     }
 
-    public ResultSet getQuestionsByTopic(int topicID) throws SQLException {
+    public List<Question> getQuestionsByTopic(int topicID) throws SQLException {
         String query = "SELECT * FROM Question WHERE topic_id = ?";
         PreparedStatement preparedStatement = conn.prepareStatement(query);
         preparedStatement.setInt(1, topicID);
 
-        return preparedStatement.executeQuery();
+        ResultSet rs = preparedStatement.executeQuery();
+
+        List<Question> questionsList = new ArrayList<>();
+        while (rs.next()) {
+            Question question = new Question();
+
+            question.setQuestionID(rs.getInt("ques_id"));
+            question.setText(rs.getString("text"));
+            question.setHint(rs.getString("hint"));
+            question.setDifficulty(rs.getInt("difficulty"));
+            question.setSolution(rs.getString("solution"));
+            question.setTopicID(rs.getInt("topic_id"));
+            questionsList.add(question);
+        }
+
+        return questionsList;
     }
 
     public int addQuestion(Question question) throws SQLException {
