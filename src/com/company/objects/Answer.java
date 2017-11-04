@@ -6,9 +6,30 @@ public class Answer {
     private String explanation;
     private int parameterID;
     private int correct;
+    private int ansID;
+
+    public int getAnsID() {
+        return ansID;
+    }
+
+    public void setAnsID(int ansID) {
+        this.ansID = ansID;
+    }
 
     public int getCorrect() {
         return correct;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public int getQuesID() {
+        return quesID;
+    }
+
+    public void setQuesID(int quesID) {
+        this.quesID = quesID;
     }
 
     public void setCorrect(int correct) {
@@ -33,17 +54,5 @@ public class Answer {
 
     public String getText() {
         return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public int getQuesID() {
-        return quesID;
-    }
-
-    public void setQuesID(int quesID) {
-        this.quesID = quesID;
     }
 }

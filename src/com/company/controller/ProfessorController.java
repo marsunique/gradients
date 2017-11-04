@@ -1,8 +1,17 @@
 package com.company.controller;
 
+import com.company.models.CourseModel;
+import com.company.models.StudentModel;
+import com.company.models.UserModel;
+import com.company.objects.Course;
+import com.company.objects.Exercise;
+import com.company.objects.Student;
 import com.company.objects.User;
 
+import java.util.List;
 import java.util.Scanner;
+
+import static java.lang.System.out;
 
 public class ProfessorController implements Controller {
     private static ProfessorController instance = null;
@@ -13,7 +22,7 @@ public class ProfessorController implements Controller {
     private ProfessorController() {
     }
 
-    public void setUser(User u){
+    public void setUser(User u) {
         prof = u;
     }
 
@@ -26,20 +35,21 @@ public class ProfessorController implements Controller {
 
     public void landingPage() {
         while (true) {
-            System.out.println("----------------------");
-            System.out.println("Welcome, Professor xxx");
-            System.out.println("----------------------");
-            System.out.println("Please enter corresponding command #");
-            System.out.println("1 View Profile");
-            System.out.println("2 View/Add Courses");
-            System.out.println("3 Enroll/Drop A Student");
-            System.out.println("4 View Report");
-            System.out.println("5 Setup TA");
-            System.out.println("6 View/Add Exercises");
-            System.out.println("7 Search/Add Questions To Question Bank");
-            System.out.println("8 Add/Remove Questions From Exercises");
-            System.out.println("9 Log Out");
-            System.out.print("Please enter corresponding command #: ");
+            out.println();
+            out.println("----------------------");
+            out.println("Welcome, Professor " + prof.lastName);
+            out.println("----------------------");
+            out.println("Please enter corresponding command #");
+            out.println("1 View Profile");
+            out.println("2 View/Add Courses");
+            out.println("3 Enroll/Drop A Student");
+            out.println("4 View Report");
+            out.println("5 Setup TA");
+            out.println("6 View/Add Exercises");
+            out.println("7 Search/Add Questions To Question Bank");
+            out.println("8 Add/Remove Questions From Exercises");
+            out.println("9 Log Out");
+            out.print("Command #: ");
             String commandNo = scan.nextLine();
             switch (commandNo) {
                 case "1":
@@ -69,70 +79,155 @@ public class ProfessorController implements Controller {
                 case "9":
                     return;
                 default:
-                    System.out.println("Invalid Command, Try Again");
+                    out.println("Invalid command, try again.");
             }
         }
     }
 
-    public void viewProfile() {
+    private void viewProfile() {
+        out.println();
+        out.println("Name: " + prof.firstName + " " + prof.lastName);
+        out.println("ID: " + prof.username);
+        for (String cid : prof.teaches) {
+            out.println("Course: " + cid);
+            Course c = CourseModel.getCourseModel().getCourseByID(cid);
+            for (String ex : c.exerciseNames) {
+                out.println(" - " + ex);
+            }
+        }
+        out.print("Press Enter to Return.");
+        scan.nextLine();
 
     }
 
-    public void courseViewAdd() {
+    private void courseViewAdd() {
         while (true) {
-            System.out.println("Enter one of the following options:");
-            System.out.println(" - The ID of An Existing Course");
-            System.out.println(" - 'N' to Add a New Course");
-            System.out.println(" - 'Q' to Return");
+            out.println();
+            out.println("Enter one of the following options:");
+            out.println("1 Search Course");
+            out.println("2 Add Course");
+            out.println("3 Return");
+            out.print("Command #: ");
             String input = scan.nextLine().toUpperCase();
             switch (input) {
-                case "Q":
+                case "3":
                     return;
-                case "N":
+                case "2":
+                    addCourse();
+                    break;
+                case "1":
+                    viewCourse();
                     break;
                 default:
-                    if (input.matches("^[a-zA-Z]{3}\\d{3}$")) {
-
-
-                        if(prof.teaches.contains(input)){
-                            System.out.println("That course is called " + input);
-                        } else {
-                            System.out.println("This course does not exist.");
-                        }
-                    } else {
-                        System.out.println("That is not a valid course title.");
-                    }
+                    out.println("Invalid command, try again.");
                     break;
             }
         }
 
     }
 
-    public void studentEnrollDrop() {
+    private void addCourse() {
+        Course c = new Course();
+        String input;
+
+        out.print("Enter a course id (Ex. CSC440): ");
+        input = scan.nextLine();
+        c.id = scan.nextLine();
+
+
+        out.print("Enter a course name: ");
+        out.print("Enter a start date (yyyy-MM-dd): ");
+        out.print("Enter an end date (yyyy-MM-dd): ");
+        //TAs
+        //Students
+        //Topics
 
     }
 
-    public void viewReport() {
+    private void viewCourse() {
+        out.print("Enter a course id: ");
+        String input = scan.nextLine();
+        if (input.matches("^[a-zA-Z]{3}\\d{3}$")) {
+            Course c = CourseModel.getCourseModel().getCourseByID(input);
+            if (c != null) {
+                User teacher = UserModel.getUser(c.instructor, null);
+                String teachName = teacher != null ? teacher.firstName + " " + teacher.lastName : "None";
+                out.println("Name: " + c.name);
+                out.println("Instructor: " + teachName);
+                out.println("Enrolled: " + c.numEnrolled + "/" + c.maxEnrolled);
+                out.println("Dates: " + c.start + " to " + c.end);
+                if (!c.exerciseNames.isEmpty() && prof.teaches.contains(input)) {
+                    out.println("Exercises: ");
+                    for (String e : c.exerciseNames) {
+                        System.out.println(" - " + e);
+                    }
+                }
+            } else {
+                out.println("This course does not exist.");
+            }
+        } else {
+            out.println("That is not a valid course id.");
+        }
+    }
+
+    private void studentEnrollDrop() {
 
     }
 
-    public void setupTA() {
+    private void viewReport() {
+        out.println();
+        if (prof.teaches.isEmpty()) {
+            out.println("You do not TA for any courses.");
+        } else {
+            for (String cid : prof.teaches) {
+                Course c = CourseModel.getCourseModel().getCourseByID(cid);
+                List<Student> studentList = StudentModel.getStudentModel().getStudentsByCourse(c);
+
+                out.println("COURSE: " + cid);
+                out.printf("|%-15s|%-15s|%-15s|", " id", " first name", " last name");
+                for (int eid : c.exerciseIds) {
+                    out.printf("%5s|", "EX" + eid);
+                }
+                out.println();
+                out.print("|---------------|---------------|---------------|");
+                for (int eid : c.exerciseIds) {
+                    out.print("-----|");
+                }
+
+                for (Student s : studentList) {
+                    out.println();
+                    out.printf("|%-15s|%-15s|%-15s|", s.studentID, s.firstName, s.lastName);
+                    for (float attempt : s.exAttempts) {
+                        out.printf("%5.2f|", attempt);
+                    }
+
+                }
+                out.println();
+                out.print("|---------------|---------------|---------------|");
+                for (int eid : c.exerciseIds) {
+                    out.print("-----|");
+                }
+                out.println();
+            }
+        }
+
+        out.print("Press Enter to Return.");
+        scan.nextLine();
+    }
+
+    private void setupTA() {
 
     }
 
-    public void exerciseViewAdd() {
+    private void exerciseViewAdd() {
 
     }
 
-    public void searchAddQuestionToBank() {
+    private void searchAddQuestionToBank() {
 
     }
 
-    public void addRemoveQuestionFromExercise() {
-
-    }
-
-    public void logOut() {
+    private void addRemoveQuestionFromExercise() {
 
     }
 }

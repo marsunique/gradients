@@ -9,15 +9,6 @@ CREATE TABLE IF NOT EXISTS User
   PRIMARY KEY (id)
 );
 
-# These will only be added one time, if they don't already
-REPLACE INTO User (id, password, first_name, last_name) VALUES
-  ('dlambright', 'dustin', 'Dustin', 'Lambright'),
-  ('dbhandari', 'darshan', 'Darshan', 'Bhandari'),
-  ('ysun', 'yuchen', 'Yuchen', 'Sun'),
-  ('lkerr', 'leonard', 'Leonard', 'Kerr'),
-  ('gyu', 'guanxu', 'Guanxu', 'Yu');
-
-
 CREATE TABLE IF NOT EXISTS Graduate
 (
   grad_id VARCHAR(255) NOT NULL,
@@ -147,7 +138,7 @@ CREATE TABLE IF NOT EXISTS Attempt
   course_id  VARCHAR(6)   NOT NULL,
   PRIMARY KEY (att_id),
   FOREIGN KEY (student_id) REFERENCES Student (student_id),
-  FOREIGN KEY (ex_id, course_id) REFERENCES Exercise (ex_id, course_id)
+  FOREIGN KEY (ex_id, course_id) REFERENCES Exercise (ex_id, course_id) ON DELETE CASCADE
 );
 
 # This table may not be necessary, if we only need to store the attempt score.
@@ -166,6 +157,6 @@ CREATE TABLE IF NOT EXISTS ExQuestions
   ex_id   INT NOT NULL,
   ques_id INT NOT NULL,
   PRIMARY KEY (ex_id, ques_id),
-  FOREIGN KEY (ex_id) REFERENCES Exercise (ex_id),
+  FOREIGN KEY (ex_id) REFERENCES Exercise (ex_id) ON DELETE CASCADE,
   FOREIGN KEY (ques_id) REFERENCES Question (ques_id)
 );

@@ -1,29 +1,64 @@
 package com.company.objects;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 public class Exercise {
-    public Exercise(){
+    public Exercise() {
 
     }
 
     // Required Variables
-    private String name, policy;
+    private String name, policy, courseID;
     private Boolean adaptive;
-    private Timestamp start, end;
-    private int numRetries, courseID;
+    private Date start, end;
+    private int numRetries;
+    private int maxDif;
+    private int minDif;
+    private int topic;
+    private int id;
+    private float pointsCorrect, pointsIncorrect;
 
-    public int getCourseID() {
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getTopic() {
+        return topic;
+    }
+
+    public void setTopic(int topic) {
+        this.topic = topic;
+    }
+
+    public int getMaxDif() {
+        return maxDif;
+    }
+
+    public void setMaxDif(int maxDif) {
+        this.maxDif = maxDif;
+    }
+
+    public int getMinDif() {
+        return minDif;
+    }
+
+    public void setMinDif(int minDif) {
+        this.minDif = minDif;
+    }
+
+    public String getCourseID() {
         return courseID;
     }
 
-    public void setCourseID(int courseID) {
+    public void setCourseID(String courseID) {
         this.courseID = courseID;
     }
 
-    private Double pointsCorrect, pointsIncorrect;
-
-    public void setName(String name){
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -35,11 +70,11 @@ public class Exercise {
         this.adaptive = adaptive;
     }
 
-    public void setStartDate(Timestamp start) {
+    public void setStartDate(Date start) {
         this.start = start;
     }
 
-    public void setEndDate(Timestamp end) {
+    public void setEndDate(Date end) {
         this.end = end;
     }
 
@@ -47,11 +82,11 @@ public class Exercise {
         this.numRetries = numRetries;
     }
 
-    public void setPointsCorrect(Double pointsCorrect) {
+    public void setPointsCorrect(float pointsCorrect) {
         this.pointsCorrect = pointsCorrect;
     }
 
-    public void setPointsIncorrect(Double pointsIncorrect) {
+    public void setPointsIncorrect(float pointsIncorrect) {
         this.pointsIncorrect = pointsIncorrect;
     }
 
@@ -63,7 +98,7 @@ public class Exercise {
         return numRetries;
     }
 
-    public Double getPointsIncorrect() {
+    public float getPointsIncorrect() {
         return pointsIncorrect;
     }
 
@@ -71,7 +106,7 @@ public class Exercise {
         return adaptive;
     }
 
-    public Double getPointsCorrect() {
+    public float getPointsCorrect() {
         return pointsCorrect;
     }
 
@@ -79,11 +114,11 @@ public class Exercise {
         return policy;
     }
 
-    public Timestamp getEnd() {
+    public Date getEnd() {
         return end;
     }
 
-    public Timestamp getStart() {
+    public Date getStart() {
         return start;
     }
 }
