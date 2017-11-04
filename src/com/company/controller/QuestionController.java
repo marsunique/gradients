@@ -1,13 +1,10 @@
 package com.company.controller;
 
 import com.company.models.QuestionModel;
-import com.company.models.TopicModel;
 import com.company.objects.Question;
 import com.company.objects.User;
 
 import java.io.IOException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
