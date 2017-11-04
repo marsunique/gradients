@@ -60,6 +60,7 @@ INSERT INTO EnrolledIn (student_id, course_id) VALUES
   ('aneela', 'CSC540'),
   ('mjones', 'CSC540'),
   ('jmick', 'CSC540'),
+  ('jmoyer', 'CSC540'),
   ('aneela', 'CSC541'),
   ('mjones', 'CSC541'),
   ('jmick', 'CSC541');
@@ -141,12 +142,15 @@ INSERT INTO Attempt (score, student_id, ex_id, course_id) VALUES
   (5.0, 'mjones', 1, 'CSC540'),
   (9.0, 'mjones', 1, 'CSC540'),
   (9.0, 'jmick', 1, 'CSC540'),
+  (9.0, 'jmoyer', 1, 'CSC540'),
   (7.0, 'aneela', 2, 'CSC540'),
   (12.0, 'aneela', 2, 'CSC540'), # Note that in the Sample Data it says "thrice" but only gives these entries
   (3.0, 'mjones', 2, 'CSC540'),
   (7.0, 'mjones', 2, 'CSC540'),
+  (12.0, 'jmoyer', 2, 'CSC540'),
   (8.0, 'aneela', 3, 'CSC540'),
   (4.0, 'aneela', 3, 'CSC540'),
   (12.0, 'aneela', 3, 'CSC540'),
   (8.0, 'mjones', 3, 'CSC540'),
-  (12.0, 'mjones', 3, 'CSC540')
+  (12.0, 'mjones', 3, 'CSC540'),
+  (12.0, 'jmoyer', 3, 'CSC540');
