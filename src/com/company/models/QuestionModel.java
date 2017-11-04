@@ -4,7 +4,9 @@ import com.company.objects.Question;
 
 import java.io.IOException;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class QuestionModel extends ModelBase {
     private static QuestionModel questionModel = null;
@@ -19,10 +21,10 @@ public class QuestionModel extends ModelBase {
         return questionModel;
     }
 
-    public void addQuestion(Question question) throws SQLException {
+    public int addQuestion(Question question) throws SQLException {
         String query = "INSERT INTO Question(topic_id, text, hint, difficulty, solution)" +
                 "VALUES(?,?,?,?,?)";
-        PreparedStatement statement = conn.prepareStatement(query);
+        PreparedStatement statement = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         statement.setInt(1, question.getTopicID());
         statement.setString(2, question.getText());
         statement.setString(3, question.getHint());
@@ -30,6 +32,11 @@ public class QuestionModel extends ModelBase {
         statement.setString(5, question.getSolution());
 
         statement.execute();
+
+        ResultSet rs = statement.getGeneratedKeys();
+
+        rs.next();
+        return rs.getInt(1); // return the question id after the insertion.
     }
 
     public void deleteQuestion(int questionID) throws SQLException {

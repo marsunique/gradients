@@ -69,10 +69,56 @@ public class QuestionController extends AbsController{
         System.out.println("Question hint: " + question.getHint());
         System.out.println("Question solution: " + question.getSolution());
 
+        int questionID = 0;
         try {
-            QuestionModel.getQuestionModel().addQuestion(question);
+            questionID = QuestionModel.getQuestionModel().addQuestion(question);
         } catch (Exception e) {
             System.out.println("ERROR: " + e.getMessage());
+        }
+
+        System.out.print("Does this question has parameters? (Y/N): ");
+        String hasParams = scanner.nextLine().toLowerCase();
+
+        AnswerController answerController = AnswerController.getAnswerController();
+
+        if(hasParams.equals("y")) {
+            //TODO: add parameters
+            ParametersController parametersController = ParametersController.getParametersController();
+            while(true) {
+                int parameterID = parametersController.addParameters(questionID);
+                while (true) {
+                    try {
+                        answerController.addAnswer(questionID, parameterID);
+                    } catch (Exception e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
+
+                    System.out.printf("Do you want to add more answers for the parameters?(Y/N) : ");
+                    String moreAns = scanner.nextLine().toLowerCase();
+                    if (moreAns.equals("n")) {
+                        break;
+                    }
+                }
+                System.out.printf("Do you want to add more parameters? (Y/N) : ");
+                String moreParams = scanner.nextLine().toLowerCase();
+                if (moreParams.equals("n")) {
+                    break;
+                }
+            }
+        } else {
+            //TODO: need to check whether the input is correct, this case add answer with no parameters
+            while (true) {
+                try {
+                    answerController.addAnswer(questionID);
+                } catch (Exception e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
+                System.out.printf("Do you want to add more Answer? (Y/N) : ");
+                String moreAnswer = scanner.nextLine().toLowerCase();
+                if (moreAnswer.equals("n")) {
+                    break;
+                }
+            }
         }
     }
 
