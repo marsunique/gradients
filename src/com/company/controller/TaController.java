@@ -17,7 +17,6 @@ public class TaController implements Controller {
     private User ta = null;
     private Scanner in = new Scanner(System.in);
 
-
     // empty constructor
     private TaController() {
     }
@@ -27,6 +26,10 @@ public class TaController implements Controller {
             instance = new TaController();
         }
         return instance;
+    }
+
+    public void setUser(User u) {
+        ta = u;
     }
 
     public void landingPage() {
@@ -47,26 +50,36 @@ public class TaController implements Controller {
                     viewProfile();
                     break;
                 case "2":
+                    studentEnrollDrop();
                     break;
                 case "3":
                     viewReport();
                     break;
                 case "4":
+                    viewCourse();
                     break;
                 case "5":
                     return;
                 default:
-                    System.out.println("Improper command.");
+                    System.out.println("Improper command. Try again.");
                     break;
             }
 
         }
     }
 
+    private void viewCourse() {
+
+    }
+
+    private void studentEnrollDrop() {
+
+    }
+
     private void viewReport() {
         System.out.println();
         if (ta.tas.isEmpty()) {
-            System.out.println("You do not TA for any courses.");
+            System.out.println("You are not TA for any courses.");
         } else {
             for (String cid : ta.tas) {
                 Course c = CourseModel.getCourseModel().getCourseByID(cid);
@@ -117,9 +130,5 @@ public class TaController implements Controller {
         }
         System.out.print("Press Enter to Return.");
         in.nextLine();
-    }
-
-    public void setUser(User u) {
-        ta = u;
     }
 }
