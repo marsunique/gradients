@@ -25,6 +25,24 @@ public class QuestionModel extends ModelBase {
         return questionModel;
     }
 
+    public Question getQuestionByQuesID(int quesID) throws SQLException {
+        Question question = new Question();
+        String query = "SELECT * FROM Question WHERE ques_id = ?";
+        PreparedStatement statement = conn.prepareStatement(query);
+        statement.setInt(1, quesID);
+
+        ResultSet rs = statement.executeQuery();
+        rs.next();
+        question.setQuestionID(rs.getInt("ques_id"));
+        question.setText(rs.getString("text"));
+        question.setSolution(rs.getString("solution"));
+        question.setDifficulty(rs.getInt("difficulty"));
+        question.setTopicID(rs.getInt("topic_id"));
+        question.setHint(rs.getString("hint"));
+
+        return question;
+    }
+
     public List<Question> getQuestionsByEx(int eid) {
         List<Question> ret = new ArrayList<>();
         Statement stmt = null;
