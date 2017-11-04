@@ -11,7 +11,7 @@ import java.sql.Statement;
 
 public class UserModel {
 
-    private static String loginQuery(String username, String password) throws IOException {
+    private static String loginQuery(String username, String password) {
         return "SELECT * " +
                 "FROM User" +
                 " WHERE id='" + username + "'" +
@@ -19,20 +19,25 @@ public class UserModel {
 
     }
 
-    private static String userByIdQuery(String username) throws IOException {
+    private static String userByIdQuery(String username) {
         return "SELECT * " +
                 "FROM User" +
                 " WHERE id='" + username + "'";
     }
 
-    public static User getUser(String username, String password) throws IOException {
+    public static User getUser(String username, String password) {
         User ret = User.getUser();
 
-        Connection conn = DBConnector.getConnector().getConn();
+        Connection conn = null;
+        try {
+            conn = DBConnector.getConnector().getConn();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Statement stmt = null;
 
         String query = null;
-        if(password == null){
+        if (password == null) {
             query = userByIdQuery(username);
         } else {
             query = loginQuery(username, password);

@@ -6,6 +6,24 @@ public class Question {
     private int difficulty;
     private String solution;
     private int topicID;
+    private int exerciseID;
+    private int questionID;
+
+    public int getQuestionID() {
+        return questionID;
+    }
+
+    public void setQuestionID(int questionID) {
+        this.questionID = questionID;
+    }
+
+    public int getExerciseID() {
+        return exerciseID;
+    }
+
+    public void setExerciseID(int exerciseID) {
+        this.exerciseID = exerciseID;
+    }
 
     public int getTopicID() {
         return topicID;

@@ -1,15 +1,15 @@
 package com.company.objects;
 
 public class Parameter {
-    private String paramID;
+    private String paramValues;
     private int ques_id;
 
-    public String getParamID() {
-        return paramID;
+    public String getParamValues() {
+        return paramValues;
     }
 
-    public void setParamID(String paramID) {
-        this.paramID = paramID;
+    public void setParamValues(String paramValues) {
+        this.paramValues = paramValues;
     }
 
     public int getQues_id() {
