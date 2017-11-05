@@ -5,6 +5,7 @@ DROP TRIGGER IF EXISTS CheckEnrolled;
 DROP TRIGGER IF EXISTS EnrollStudent;
 DROP TRIGGER IF EXISTS DropStudent;
 DROP TRIGGER IF EXISTS AttExercise;
+DROP TRIGGER IF EXISTS GradEnroll;
 
 # A sql script containing some triggers to enforce constraints.
 
@@ -22,4 +23,4 @@ CREATE TRIGGER QuestionCheck BEFORE INSERT ON question FOR EACH ROW BEGIN IF (NE
 
 CREATE TRIGGER AttExercise BEFORE INSERT ON attempt FOR EACH ROW BEGIN IF (NOT EXISTS(SELECT * FROM enrolledin WHERE enrolledin.course_id = NEW.course_id AND enrolledin.student_id = NEW.student_id)) THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Student must be enrolled in course to make attempt'; END IF; END;
 
-CREATE TRIGGER GradEnroll BEFORE INSERT ON enrolledin FOR EACH ROW BEGIN IF (EXISTS(SELECT * FROM course WHERE course.course_id = NEW.course_id AND graduate = TRUE) AND NOT EXISTS(SELECT * FROM graduate WHERE graduate.grad_id = NEW.student_id)) THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Student must be a graduate to enroll in grad classes'; END IF; END;
+CREATE TRIGGER GradEnroll BEFORE INSERT ON enrolledin FOR EACH ROW BEGIN IF (EXISTS(SELECT * FROM course WHERE course.course_id = NEW.course_id AND graduate = TRUE) AND NOT EXISTS(SELECT * FROM graduate WHERE graduate.grad_id = NEW.student_id)) THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Student must be a graduate to enroll in grad classes'; END IF; IF (EXISTS(SELECT * FROM tafor WHERE NEW.student_id = tafor.ta_id AND NEW.course_id = tafor.course_id)) THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Student may not enroll in a class they TA for'; END IF; END;
