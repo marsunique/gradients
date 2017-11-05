@@ -1,14 +1,13 @@
 package com.company.controller;
 
-import com.company.models.CourseModel;
-import com.company.models.StudentModel;
-import com.company.models.UserModel;
-import com.company.models.ProfessorModel;
+import com.company.models.*;
 import com.company.objects.Course;
 import com.company.objects.Exercise;
 import com.company.objects.Student;
 import com.company.objects.User;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
@@ -86,7 +85,7 @@ public class ProfessorController implements Controller {
                     addRemoveQuestionFromExercise();
                     break;
                 case "9":
-                    return;
+                    logOut();
                 default:
                     out.println("Invalid command, try again.");
             }
@@ -117,7 +116,7 @@ public class ProfessorController implements Controller {
             out.println("Enter one of the following options:");
             out.println("1 View Course");
             out.println("2 Add Course");
-            out.println("3 Return");
+            out.println("3 Back");
             out.print("Command #: ");
             String input = scan.nextLine().toUpperCase();
             switch (input) {
@@ -234,7 +233,7 @@ public class ProfessorController implements Controller {
             out.println("Enter one of the following options:");
             out.println("1 Add a Student");
             out.println("2 Drop a Student");
-            out.println("3 Return");
+            out.println("3 Back");
             out.print("Command #: ");
             String input = scan.nextLine().toUpperCase();
             if (input.equals("1")) {
@@ -369,7 +368,161 @@ public class ProfessorController implements Controller {
     }
 
     private void exerciseViewAdd() {
+        while (true) {
+            out.println();
+            out.println("Enter one of the following options:");
+            out.println("1 View Exercise");
+            out.println("2 Add Exercise");
+            out.println("3 Back");
+            out.print("Command #: ");
+            String input = scan.nextLine();
+            switch (input) {
+                case "1":
+                    viewExercise();
+                    break;
+                case "2":
+                    addExercise();
+//                    try {
+//                        ProfExerciseController.getProfessorController().addExercise();
+//                    }
+//                    catch (Exception e) {
+//                        out.println("ERROR: " + e.getMessage());
+//                    }
+                    break;
+                case "3":
+                    return;
+                default:
+                    out.println("Invalid command, try again.");
+                    break;
+            }
+        }
+    }
 
+    private void viewExercise() {
+        out.print("Enter a exercise id: ");
+        String input = scan.nextLine();
+        if (input.matches("\\d+")) {
+            int e_id = Integer.valueOf(input);
+            Exercise e = ExerciseModel.getExerciseModel().getExerciseById(e_id);
+            if (e != null) {
+                try {
+                    out.println();
+                    out.println("-----------------------");
+                    out.println("Detail of Exercise " + e_id);
+                    out.println("-----------------------");
+                    out.println("Name: " + e.getName());
+                    out.println("Start Date: " + e.getStart());
+                    out.println("End Date: " + e.getEnd());
+                    out.println("Number of Attempts: " + e.getNumRetries());
+                    out.println("Course ID: " + e.getCourseID());
+                    out.println("Topic: " + TopicModel.getTopicModel().getTopicByID(e.getTopic()));
+                    out.println("Adaptive: " + e.getAdaptive());
+                    out.println("Right Points: " + e.getPointsCorrect());
+                    out.println("Wrong Points: " + e.getPointsIncorrect());
+                    out.println("Scoring Policy: " + e.getPolicy());
+                    out.println("Min Dif: " + e.getMinDif());
+                    out.println("Max Dif: " + e.getMaxDif());
+                    out.print("Press Enter to Return");
+                    input = scan.nextLine();
+                }
+                catch (Exception er) {
+                    out.println("ERROR: " + er.getMessage());
+                }
+            }
+            else {
+                out.println("This exercise does not exist.");
+            }
+        }
+        else {
+            out.println("Invalid exercise id, id should only contain numbers");
+        }
+    }
+
+    private void addExercise() {
+        Exercise e = new Exercise();
+        out.println("Please provide information of the new exercise");
+
+        out.print("Name (Ex. Homework 1): ");
+        e.setName(scan.nextLine());
+
+        out.print("Start Date (yyyy-MM-dd): ");
+        String startdate = scan.nextLine();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date utilstartDate = (Date)formatter.parse(startdate);
+            e.setStartDate(new java.sql.Date(utilstartDate.getTime()));
+        }
+        catch (ParseException er) {
+            er.printStackTrace();
+        }
+
+        out.print("End Date (yyyy-MM-dd): ");
+        String enddate = scan.nextLine();
+        try {
+            Date utilendDate = (Date)formatter.parse(enddate);
+            e.setEndDate(new java.sql.Date(utilendDate.getTime()));
+        }
+        catch (ParseException er) {
+            er.printStackTrace();
+        }
+
+        out.print("Number of Attempts: ");
+        e.setNumRetries(Integer.parseInt(scan.nextLine()));
+
+        out.print("Course ID: ");
+        e.setCourseID(scan.nextLine());
+
+        out.print("Topic (topic id): ");
+        e.setTopic(Integer.parseInt(scan.nextLine()));
+
+        out.print("Adaptive (YES/NO): ");
+        String input = scan.nextLine().toUpperCase();
+        if (input.equals("YES")) {
+            e.setAdaptive(true);
+        }
+        else if (input.equals("NO")){
+            e.setAdaptive(false);
+        }
+        else {
+            out.println("Invalid input, set to NO by default");
+            e.setAdaptive(false);
+        }
+
+        out.print("Right Points: ");
+        e.setPointsCorrect(Float.parseFloat(scan.nextLine()));
+
+        out.print("Wrong Points: ");
+        e.setPointsIncorrect(Float.parseFloat(scan.nextLine()));
+
+        out.print("Scoring Policy (last/average/highest): ");
+        input = scan.nextLine().toUpperCase();
+        if (input.equals("LAST")) {
+            e.setPolicy("last");
+        }
+        else if (input.equals("AVERAGE")) {
+            e.setPolicy("average");
+        }
+        else if (input.equals("HIGHEST")) {
+            e.setPolicy("highest");
+        }
+        else {
+            out.println("Invalid policy, set to highest by default");
+            e.setPolicy("highest");
+        }
+
+        out.print("Min Dif: ");
+        e.setMinDif(Integer.parseInt(scan.nextLine()));
+
+        out.print("Max Dif: ");
+        e.setMaxDif(Integer.parseInt(scan.nextLine()));
+
+        try {
+            ExerciseModel.getExerciseModel().createExercies(e);
+            out.println("Exercise has been successfully added");
+        }
+        catch (Exception er) {
+            out.println("ERROR: " + er.getMessage());
+        }
     }
 
     private void searchAddQuestionToBank() {
@@ -378,5 +531,10 @@ public class ProfessorController implements Controller {
 
     private void addRemoveQuestionFromExercise() {
 
+    }
+
+    public void logOut(){
+        System.out.println("Good-bye");
+        System.exit(0);
     }
 }

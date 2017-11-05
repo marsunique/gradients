@@ -121,6 +121,62 @@ public class TaController implements Controller {
         }
     }
 
+    private void addStudent() {
+        System.out.print("Enter a student id: ");
+        String studentID = scanner.nextLine();
+        System.out.print("Enter a course id: ");
+        String courseID = scanner.nextLine();
+        while (true) {
+            System.out.println("Add " + studentID + " to " + courseID + "? (YES/NO)");
+            String input = scanner.nextLine();
+            if (input.toUpperCase().equals("YES")) {
+                try {
+                    ProfessorModel.getProfessorModel().enrollStudent(studentID, courseID);
+                    System.out.println("You have successfully enrolled the student with ID " + studentID + " for the course " + courseID);
+                }
+                catch (Exception e) {
+                    System.out.println("ERROR: " + e.getMessage());
+                }
+                break;
+            }
+            else if (input.toUpperCase().equals("NO")) {
+                System.out.println("Canceled");
+                break;
+            }
+            else {
+                System.out.println("Please enter YES or NO");
+            }
+        }
+    }
+
+    private void dropStudent() {
+        System.out.print("Enter a student id: ");
+        String studentID = scanner.nextLine();
+        System.out.print("Enter a course id: ");
+        String courseID = scanner.nextLine();
+        while (true) {
+            System.out.println("Drop " + studentID + " from " + courseID + "? (YES/NO)");
+            String input = scanner.nextLine();
+            if (input.toUpperCase().equals("YES")) {
+                try{
+                    ProfessorModel.getProfessorModel().studentEnrollDrop(studentID, courseID);
+                    System.out.println("You have successfully drop the student with ID " + studentID + " from the course " + courseID);
+                }
+                catch (Exception e) {
+                    System.out.println("ERROR: " + e.getMessage());
+                }
+                break;
+            }
+            else if (input.toUpperCase().equals("NO")) {
+                System.out.println("Canceled");
+                break;
+            }
+            else {
+                System.out.println("Please enter YES or NO");
+            }
+        }
+    }
+
     private void viewReport() {
         while (true) {
             System.out.println();
@@ -227,62 +283,6 @@ public class TaController implements Controller {
             }
             catch (Exception e) {
                 System.out.println("Can't get student model stuff - from viewClassInfo() method");
-            }
-        }
-    }
-
-    private void addStudent() {
-        System.out.print("Enter a student id: ");
-        String studentID = scanner.nextLine();
-        System.out.print("Enter a course id: ");
-        String courseID = scanner.nextLine();
-        while (true) {
-            System.out.println("Add " + studentID + " to " + courseID + "? (YES/NO)");
-            String input = scanner.nextLine();
-            if (input.toUpperCase().equals("YES")) {
-                try {
-                    ProfessorModel.getProfessorModel().enrollStudent(studentID, courseID);
-                    System.out.println("You have successfully enrolled the student with ID " + studentID + " for the course " + courseID);
-                }
-                catch (Exception e) {
-                    System.out.println("ERROR: " + e.getMessage());
-                }
-                break;
-            }
-            else if (input.toUpperCase().equals("NO")) {
-                System.out.println("Canceled");
-                break;
-            }
-            else {
-                System.out.println("Please enter YES or NO");
-            }
-        }
-    }
-
-    private void dropStudent() {
-        System.out.print("Enter a student id: ");
-        String studentID = scanner.nextLine();
-        System.out.print("Enter a course id: ");
-        String courseID = scanner.nextLine();
-        while (true) {
-            System.out.println("Drop " + studentID + " from " + courseID + "? (YES/NO)");
-            String input = scanner.nextLine();
-            if (input.toUpperCase().equals("YES")) {
-                try{
-                    ProfessorModel.getProfessorModel().studentEnrollDrop(studentID, courseID);
-                    System.out.println("You have successfully drop the student with ID " + studentID + " from the course " + courseID);
-                }
-                catch (Exception e) {
-                    System.out.println("ERROR: " + e.getMessage());
-                }
-                break;
-            }
-            else if (input.toUpperCase().equals("NO")) {
-                System.out.println("Canceled");
-                break;
-            }
-            else {
-                System.out.println("Please enter YES or NO");
             }
         }
     }

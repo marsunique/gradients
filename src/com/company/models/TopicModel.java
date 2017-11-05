@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class TopicModel extends ModelBase {
     private static TopicModel topicModel = null;
@@ -23,6 +24,27 @@ public class TopicModel extends ModelBase {
         ResultSet rs = statement.executeQuery();
 
         return rs;
+    }
+
+    public String getTopicByID(int id) throws SQLException {
+        Statement stmt = null;
+        String query = "SELECT * " +
+                "FROM Topic " +
+                "WHERE topic_id=" + String.valueOf(id);
+        try {
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            if (rs.next()) {
+                return rs.getString("name");
+            }
+            else {
+                return null;
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public void addTopic(String topicName) throws SQLException {
