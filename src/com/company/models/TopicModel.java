@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TopicModel extends ModelBase {
     private static TopicModel topicModel = null;
@@ -24,6 +26,26 @@ public class TopicModel extends ModelBase {
         ResultSet rs = statement.executeQuery();
 
         return rs;
+    }
+
+    public ArrayList<String> getAllTopics() {
+        Statement stmt = null;
+        String query = "SELECT * FROM Topic";
+        ArrayList<String> ret = new ArrayList<>();
+        try {
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                String res = rs.getString("topic_id") + " -- " +
+                        rs.getString("name");
+                ret.add(res);
+            }
+            return ret;
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public String getTopicByID(int id) throws SQLException {
