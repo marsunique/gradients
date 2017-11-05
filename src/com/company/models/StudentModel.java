@@ -102,7 +102,7 @@ public class StudentModel extends ModelBase {
         return "";
     }
 
-    public HashMap<String, Integer> getAvailableExercises(String studentId, String classId)throws SQLException{
+    public ArrayList<Exercise> getAvailableExercises(String studentId, String classId)throws SQLException{
         Statement statement = conn.createStatement();
         String query = "SELECT e.name, e.ex_id " +
                 "FROM Gradients.Exercise AS e " +
@@ -118,11 +118,16 @@ public class StudentModel extends ModelBase {
 
         ResultSet rs = statement.executeQuery(query);
 
-        HashMap<String, Integer> availableExercisesDictionary = new HashMap<String, Integer>();
+        ArrayList<Integer> id_numbers = new ArrayList<>();
+        ArrayList<Exercise> exercises = new ArrayList<>();
         while (rs.next()){
-            availableExercisesDictionary.put(rs.getString("name"), Integer.valueOf(rs.getString("ex_id")));
+            id_numbers.add(Integer.valueOf(rs.getString("ex_id")));
         }
-        return availableExercisesDictionary;
+        for (Integer i : id_numbers){
+            exercises.add(ExerciseModel.getExerciseModel().getExerciseById(i));
+        }
+
+        return exercises;
     }
 
     public ArrayList<HashMap<String, String>> getExerciseAttempt(String studentId, String classId){

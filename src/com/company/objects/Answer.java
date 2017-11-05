@@ -1,12 +1,17 @@
 package com.company.objects;
 
+import java.util.ArrayList;
+
 public class Answer {
-    private String text;
-    private int quesID;
-    private String explanation;
-    private int parameterID;
+    private String text, explanation;
+    private int quesID, ansID, parameterID;
     private int correct;
-    private int ansID;
+    public ArrayList<String> paramVals;
+
+
+    public Answer (){
+        paramVals = new ArrayList<>();
+    }
 
     public int getAnsID() {
         return ansID;

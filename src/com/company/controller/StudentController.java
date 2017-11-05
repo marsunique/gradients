@@ -1,6 +1,7 @@
 package com.company.controller;
 
 import com.company.models.StudentModel;
+import com.company.objects.Exercise;
 import com.company.objects.User;
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -111,7 +112,6 @@ public class StudentController implements Controller {
         while (input == ""){
             input = scanner.next();
 
-
             int result = Integer.valueOf(input.replace(" ", ""));
 
 
@@ -179,7 +179,8 @@ public class StudentController implements Controller {
 
     public void viewCurrentExercises(String classId) {
         try {
-            HashMap<String, Integer> exercisesMap = StudentModel.getStudentModel().getAvailableExercises(student.username, classId);
+            ArrayList<Exercise> exercises = StudentModel.getStudentModel().getAvailableExercises(student.username, classId);
+
 
             Scanner scanner = new Scanner(System.in);
 
@@ -188,13 +189,13 @@ public class StudentController implements Controller {
             System.out.println(title);
             System.out.println(hlines(title));
 
-            int count = 1;
-            for (String key: exercisesMap.keySet()){
-                System.out.println(count + " " + key);
-                count ++;
+            for (int i = 0; i < exercises.size(); i ++){
+
+                System.out.println((i + 1) + " " + exercises.get(i).getName());
+
             }
-            System.out.println((count + 1) + " Back");
-            System.out.println((count + 2) + " Log Out");
+            System.out.println((exercises.size() + 1) + " Back");
+            System.out.println((exercises.size() + 2) + " Log Out");
 
 
             String input = "";
@@ -203,14 +204,14 @@ public class StudentController implements Controller {
 
                 int result = Integer.valueOf(input.replace(" ", ""));
 
-                if (result == count){
+                if (result == exercises.size() + 1){
                     viewClassInfo(classId);
                 }
-                else if (result == exercisesMap.size() + 1){
+                else if (result == exercises.size() + 2){
                     logOut();
                 }
-                else if (result < count){
-                    System.out.println("todo");
+                else if (result < exercises.size() + 1){
+                    StudentExerciseController.getInstance().landingPage(exercises.get(result-1));
                 }
                 else{
                     System.out.println("Invalid input.  Try again:");
@@ -237,10 +238,10 @@ public class StudentController implements Controller {
         try{
             ArrayList<HashMap<String, String>> attemptsArrayList = StudentModel.getStudentModel().getExerciseAttempt(student.username, classId);
 
-            int count = 1;
+            int count = 0;
             for (HashMap<String, String> hm : attemptsArrayList){
-                System.out.println(count + " " + hm.get("name"));
                 count ++;
+                System.out.println(count + " " + hm.get("name"));
             }
             System.out.println();
 
@@ -250,13 +251,13 @@ public class StudentController implements Controller {
 
                 int result = Integer.valueOf(input.replace(" ", ""));
 
-                if (result == count){
+                if (result == count + 1){
                     viewClassInfo(classId);
                 }
-                else if (result == count + 1){
+                else if (result == count + 2){
                     logOut();
                 }
-                else if (result < count){
+                else if (result <= count){
                     System.out.println("todo");
                 }
                 else{

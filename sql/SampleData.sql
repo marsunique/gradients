@@ -82,9 +82,12 @@ INSERT INTO CourseTopic (course_id, topic_id) VALUES
 
 INSERT INTO Exercise (wrong_points, right_points, name, num_attempts, adaptive, scoring_policy, course_id, topic_id, start_date, end_date, min_dif, max_dif)
 VALUES
-  (1, 3, 'Homework 1', 2, FALSE, 'last', 'CSC540', 11, '2017-08-12', '2017-09-19', 1, 3),
-  (1, 4, 'Homework 2', 2, TRUE, 'average', 'CSC540', 11, '2017-09-21', '2017-10-10', 3, 5),
+  (1, 3, 'Homework 1', 2, FALSE, 'last', 'CSC540', 11, '2017-08-12', '2017-12-19', 1, 3),
+  (1, 4, 'Homework 2', 2, TRUE, 'average', 'CSC540', 11, '2017-09-21', '2017-12-10', 3, 5),
   (0, 4, 'Homework 3', 9999, FALSE, 'average', 'CSC540', 3, '2017-10-12', '2017-10-30', 3, 5);
+
+--   (1, 3, 'Homework 1', 2, FALSE, 'last', 'CSC540', 11, '2017-08-12', '2017-09-19', 1, 3),
+--   (1, 4, 'Homework 2', 2, TRUE, 'average', 'CSC540', 11, '2017-09-21', '2017-10-10', 3, 5),
 
 INSERT INTO Question (text, hint, difficulty, solution, topic_id) VALUES
   ('Question 1?', 'Hint Text Q1', 2, 'Detailed Explanation Q1', 11),

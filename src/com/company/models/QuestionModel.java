@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class QuestionModel extends ModelBase {
@@ -58,7 +59,7 @@ public class QuestionModel extends ModelBase {
         return ret;
     }
 
-    public List<Answer> getAnswersByQues(int aid) {
+    public List<Answer> getAnswersByQues(int qid) {
         List<Answer> ret = new ArrayList<>();
         Statement stmt = null;
 
@@ -67,7 +68,7 @@ public class QuestionModel extends ModelBase {
                 "FROM answer a\n" +
                 "  LEFT JOIN (parameters p)\n" +
                 "    ON (a.ques_id = p.ques_id AND a.param_id = p.param_id)\n" +
-                "WHERE a.ques_id = 3;";
+                "WHERE a.ques_id = " + qid + ";";
 
         try {
             stmt = conn.createStatement();
@@ -80,6 +81,12 @@ public class QuestionModel extends ModelBase {
                 a.setParameterID(rs.getInt("param_id"));
                 a.setText(rs.getString("text"));
                 a.setQuesID(rs.getInt("ques_id"));
+                String paramValsString = rs.getString("param_vals");
+                if (paramValsString != null){
+                    String[] paramVals = rs.getString("param_vals").split(", ");
+                    a.paramVals.addAll(Arrays.asList(paramVals));
+                }
+
                 ret.add(a);
             }
         } catch (SQLException e) {
