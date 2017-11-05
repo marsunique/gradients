@@ -31,10 +31,10 @@ public class Main {
 
         //Dustin got sick of entering his username/password ever time....
 //        User guy = UserModel.getUser(username, password);
-        User guy = UserModel.getUser("mfisher", "mfisher");
+//        User guy = UserModel.getUser("mfisher", "mfisher");
 //        User guy = UserModel.getUser("kogan", "kogan");
 //        User guy = UserModel.getUser("jharla", "jharla");
-//        User guy = UserModel.getUser("mjones", "mjones");
+        User guy = UserModel.getUser("jmoyer", "jmoyer");
 
         PrintStream o = System.out;
 

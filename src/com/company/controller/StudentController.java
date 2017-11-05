@@ -211,6 +211,7 @@ public class StudentController implements Controller {
                     logOut();
                 }
                 else if (result < exercises.size() + 1){
+                    StudentExerciseController.getInstance().setUser(student);
                     StudentExerciseController.getInstance().landingPage(exercises.get(result-1));
                 }
                 else{
@@ -243,6 +244,8 @@ public class StudentController implements Controller {
                 count ++;
                 System.out.println(count + " " + hm.get("name"));
             }
+            System.out.println((count + 1) + " Back");
+            System.out.println((count + 2) + " Log Out");
             System.out.println();
 
             String input = "";

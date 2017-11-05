@@ -16,6 +16,7 @@ public class Exercise {
     private int minDif;
     private int topic;
     private int id;
+    private int finalScore;
     private float pointsCorrect, pointsIncorrect;
 
     public int getId() {
@@ -121,4 +122,8 @@ public class Exercise {
     public Date getStart() {
         return start;
     }
+
+    public void setFinalScore(int score) {finalScore = score;}
+
+    public int getFinalScore() { return finalScore; }
 }

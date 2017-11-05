@@ -1,6 +1,7 @@
 package com.company.controller;
 
 import com.company.models.QuestionModel;
+import com.company.models.StudentExerciseModel;
 import com.company.objects.Question;
 import com.company.objects.Answer;
 import com.company.objects.User;
@@ -315,8 +316,13 @@ public class StudentExerciseController implements Controller {
             System.out.println("");
         }
         System.out.println("TOTAL POINTS: " + totalPoints + "/" + (int)(studentResponses.size() * exercise.getPointsCorrect()));
+        exercise.setFinalScore(totalPoints);
+
+        StudentExerciseModel.getStudentExerciseModel().saveAttemptToDB(questions, student.username, exercise);
+
         System.out.println("Press enter to continue...");
         scanner.nextLine();
+
 
         StudentController.getInstance().landingPage();
     }
