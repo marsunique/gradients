@@ -9,7 +9,6 @@ import com.company.objects.User;
 import java.util.*;
 
 import com.company.objects.Exercise;
-import com.sun.org.apache.xerces.internal.impl.xs.SchemaNamespaceSupport;
 
 public class StudentExerciseController implements Controller {
     private static StudentExerciseController instance = null;

@@ -1,6 +1,7 @@
 package com.company.objects;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class User {
 
@@ -14,7 +15,7 @@ public class User {
     public String firstName;
     public String lastName;
     public ArrayList<String> tas;
-    public ArrayList<String> teaches;
+    public List<String> teaches;
     public ArrayList<String> enrolled;
 
     private static User user = null;

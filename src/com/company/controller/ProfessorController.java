@@ -2,11 +2,7 @@ package com.company.controller;
 
 import com.company.models.*;
 import com.company.objects.*;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.text.ParseException;
@@ -14,15 +10,15 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Scanner;
 import java.text.DateFormat;
+import java.util.stream.Collectors;
 
 
-import static java.lang.System.in;
 import static java.lang.System.out;
 
 public class ProfessorController implements Controller {
     private static ProfessorController instance = null;
-    Scanner scan = new Scanner(System.in);
-    User prof = null;
+    private Scanner scan = new Scanner(System.in);
+    private User prof = null;
 
     // empty constructor
     private ProfessorController() {
@@ -84,6 +80,7 @@ public class ProfessorController implements Controller {
                     break;
                 case "9":
                     logOut();
+                    return;
                 default:
                     out.println("Invalid command, try again.");
             }
@@ -136,7 +133,7 @@ public class ProfessorController implements Controller {
     private void addCourse() {
         Course c = new Course();
         int input;
-        String startDate,endDate;
+        String startDate, endDate;
         Date utilstartDate = new Date();
         Date utilendDate = new Date();
 
@@ -146,13 +143,13 @@ public class ProfessorController implements Controller {
 
 
         out.print("Enter a course name: ");
-        c.name=scan.nextLine();
+        c.name = scan.nextLine();
 
         out.print("Enter a start date (yyyy-MM-dd): ");
-        startDate=scan.nextLine();
+        startDate = scan.nextLine();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            utilstartDate = (Date)formatter.parse(startDate);
+            utilstartDate = (Date) formatter.parse(startDate);
             c.start = new java.sql.Date(utilstartDate.getTime());
         } catch (ParseException e) {
             // TODO Auto-generated catch block
@@ -161,32 +158,31 @@ public class ProfessorController implements Controller {
 
 
         out.print("Enter an end date (yyyy-MM-dd): ");
-        endDate=scan.nextLine();
+        endDate = scan.nextLine();
         try {
-            utilendDate = (Date)formatter.parse(endDate);
+            utilendDate = (Date) formatter.parse(endDate);
             c.end = new java.sql.Date(utilendDate.getTime());
         } catch (ParseException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        out.println("Enter the instructor id:");
-        c.instructor=scan.nextLine();
+        out.print("Enter the instructor id: ");
+        c.instructor = scan.nextLine();
 
-        out.println("Enter whether this is a graduate course or not :");
-        out.println("Enter 1 if it is a graduate course, else enter if its 0");
+        out.print("Enter 1 if it is a graduate course, else enter 0: ");
         input = scan.nextInt();
-        if(input==0)
-            c.graduate=false;
-        else
-            c.graduate=true;
+        c.graduate = input != 0;
 
-        out.println("Enter the maximum no. of students that can enroll:");
-        c.maxEnrolled=scan.nextInt();
+        out.print("Enter the maximum no. of students that can enroll: ");
+        c.maxEnrolled = scan.nextInt();
 
         try {
-            ProfessorModel.getProfessorModel().courseAdd(c.id,c.name,c.start,c.end,c.instructor,input,c.maxEnrolled);
+            ProfessorModel.getProfessorModel().courseAdd(c.id, c.name, c.start, c.end, c.instructor, input, c.maxEnrolled);
             out.println("You have successfully created a new course");
+            if (c.instructor.equals(prof.username)) {
+                prof.teaches.add(c.id);
+            }
         } catch (Exception e) {
             System.out.println("ERROR: " + e.getMessage());
         }
@@ -215,12 +211,10 @@ public class ProfessorController implements Controller {
                         System.out.println(" - " + e);
                     }
                 }
-            }
-            else {
+            } else {
                 out.println("This course does not exist.");
             }
-        }
-        else {
+        } else {
             out.println("That is not a valid course id.");
         }
     }
@@ -236,20 +230,17 @@ public class ProfessorController implements Controller {
             String input = scan.nextLine().toUpperCase();
             if (input.equals("1")) {
                 addStudent();
-            }
-            else if (input.equals("2")) {
+            } else if (input.equals("2")) {
                 dropStudent();
-            }
-            else if (input.equals("3")) {
+            } else if (input.equals("3")) {
                 break;
-            }
-            else {
+            } else {
                 out.println("Invalid input.  Try again:");
             }
         }
     }
 
-    private void addStudent()  {
+    private void addStudent() {
         Student s = new Student();
         out.print("Enter a student id: ");
         s.studentID = scan.nextLine();
@@ -266,18 +257,16 @@ public class ProfessorController implements Controller {
                     out.println("ERROR: " + e.getMessage());
                 }
                 break;
-            }
-            else if (input.toUpperCase().equals("NO")) {
+            } else if (input.toUpperCase().equals("NO")) {
                 out.println("Canceled");
                 break;
-            }
-            else {
+            } else {
                 out.println("Please enter YES or NO");
             }
         }
     }
 
-    private void dropStudent(){
+    private void dropStudent() {
         Student s = new Student();
         out.print("Enter a student id: ");
         s.studentID = scan.nextLine();
@@ -294,59 +283,57 @@ public class ProfessorController implements Controller {
                     out.println("ERROR: " + e.getMessage());
                 }
                 break;
-            }
-            else if (input.toUpperCase().equals("NO")) {
+            } else if (input.toUpperCase().equals("NO")) {
                 System.out.println("Canceled");
                 break;
-            }
-            else {
+            } else {
                 System.out.println("Please enter YES or NO");
             }
         }
     }
 
     private void viewReport() {
-        while (true) {
-            out.println();
-            if (prof.teaches.isEmpty()) {
-                out.println("You do not TA for any courses.");
-            } else {
-                for (String cid : prof.teaches) {
-                    Course c = CourseModel.getCourseModel().getCourseByID(cid);
-                    List<Student> studentList = StudentModel.getStudentModel().getStudentsByCourse(c);
 
-                    out.println("COURSE: " + cid);
-                    out.printf("|%-15s|%-15s|%-15s|", " id", " first name", " last name");
-                    for (int eid : c.exerciseIds) {
-                        out.printf("%5s|", "EX" + eid);
-                    }
-                    out.println();
-                    out.print("|---------------|---------------|---------------|");
-                    for (int eid : c.exerciseIds) {
-                        out.print("-----|");
-                    }
+        //Remove Duplicate courses
+        prof.teaches = prof.teaches.stream().distinct().collect(Collectors.toList());
+        out.println();
+        if (prof.teaches.isEmpty()) {
+            out.println("You do not teach any courses.");
+        } else {
+            for (String cid : prof.teaches) {
+                Course c = CourseModel.getCourseModel().getCourseByID(cid);
+                List<Student> studentList = StudentModel.getStudentModel().getStudentsByCourse(c);
 
-                    for (Student s : studentList) {
-                        out.println();
-                        out.printf("|%-15s|%-15s|%-15s|", s.studentID, s.firstName, s.lastName);
-                        for (float attempt : s.exAttempts) {
-                            out.printf("%5.2f|", attempt);
-                        }
-
-                    }
-                    out.println();
-                    out.print("|---------------|---------------|---------------|");
-                    for (int eid : c.exerciseIds) {
-                        out.print("-----|");
-                    }
-                    out.println();
+                out.println("COURSE: " + cid);
+                out.printf("|%-15s|%-15s|%-15s|", " id", " first name", " last name");
+                for (String ename : c.exerciseNames) {
+                    out.printf("%15s|", ename + " ");
                 }
-            }
+                out.println();
+                out.print("|---------------|---------------|---------------|");
+                for (int eid : c.exerciseIds) {
+                    out.print("---------------|");
+                }
 
-            out.print("Press Enter to Return.");
-            String input = scan.nextLine();
-            if (input.equals("")) break;
+                for (Student s : studentList) {
+                    out.println();
+                    out.printf("|%-15s|%-15s|%-15s|", s.studentID, s.firstName, s.lastName);
+                    for (float attempt : s.exAttempts) {
+                        out.printf("%15.2f|", attempt);
+                    }
+
+                }
+                out.println();
+                out.print("|---------------|---------------|---------------|");
+                for (int eid : c.exerciseIds) {
+                    out.print("---------------|");
+                }
+                out.println();
+            }
         }
+
+        out.print("Press Enter to Return.");
+        String input = scan.nextLine();
     }
 
     private void setupTA() {
@@ -357,8 +344,8 @@ public class ProfessorController implements Controller {
         s.courseID = scan.nextLine();
 
         try {
-            ProfessorModel.getProfessorModel().setupTA(s.studentID,s.courseID);
-            System.out.println("You have successfully added "+ s.studentID+ " as TA for "+s.courseID );
+            ProfessorModel.getProfessorModel().setupTA(s.studentID, s.courseID);
+            System.out.println("You have successfully added " + s.studentID + " as TA for " + s.courseID);
             return;
         } catch (Exception e) {
             System.out.println("ERROR: " + e.getMessage());
@@ -422,16 +409,13 @@ public class ProfessorController implements Controller {
                     out.println("Max Dif: " + e.getMaxDif());
                     out.print("Press Enter to Return");
                     input = scan.nextLine();
-                }
-                catch (Exception er) {
+                } catch (Exception er) {
                     out.println("ERROR: " + er.getMessage());
                 }
-            }
-            else {
+            } else {
                 out.println("This exercise does not exist.");
             }
-        }
-        else {
+        } else {
             out.println("Invalid exercise id, id should only contain numbers");
         }
     }
@@ -447,20 +431,18 @@ public class ProfessorController implements Controller {
         String startdate = scan.nextLine();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            Date utilstartDate = (Date)formatter.parse(startdate);
+            Date utilstartDate = (Date) formatter.parse(startdate);
             e.setStartDate(new java.sql.Date(utilstartDate.getTime()));
-        }
-        catch (ParseException er) {
+        } catch (ParseException er) {
             er.printStackTrace();
         }
 
         out.print("End Date (yyyy-MM-dd): ");
         String enddate = scan.nextLine();
         try {
-            Date utilendDate = (Date)formatter.parse(enddate);
+            Date utilendDate = (Date) formatter.parse(enddate);
             e.setEndDate(new java.sql.Date(utilendDate.getTime()));
-        }
-        catch (ParseException er) {
+        } catch (ParseException er) {
             er.printStackTrace();
         }
 
@@ -477,11 +459,9 @@ public class ProfessorController implements Controller {
         String input = scan.nextLine().toUpperCase();
         if (input.equals("YES")) {
             e.setAdaptive(true);
-        }
-        else if (input.equals("NO")){
+        } else if (input.equals("NO")) {
             e.setAdaptive(false);
-        }
-        else {
+        } else {
             out.println("Invalid input, set to NO by default");
             e.setAdaptive(false);
         }
@@ -496,14 +476,11 @@ public class ProfessorController implements Controller {
         input = scan.nextLine().toUpperCase();
         if (input.equals("LAST")) {
             e.setPolicy("last");
-        }
-        else if (input.equals("AVERAGE")) {
+        } else if (input.equals("AVERAGE")) {
             e.setPolicy("average");
-        }
-        else if (input.equals("HIGHEST")) {
+        } else if (input.equals("HIGHEST")) {
             e.setPolicy("highest");
-        }
-        else {
+        } else {
             out.println("Invalid policy, set to highest by default");
             e.setPolicy("highest");
         }
@@ -517,8 +494,7 @@ public class ProfessorController implements Controller {
         try {
             ExerciseModel.getExerciseModel().createExercies(e);
             out.println("Exercise has been successfully added");
-        }
-        catch (Exception er) {
+        } catch (Exception er) {
             out.println("ERROR: " + er.getMessage());
         }
     }
@@ -562,8 +538,7 @@ public class ProfessorController implements Controller {
             out.println("Text: " + question.getDifficulty());
             out.print("Press Enter to Return");
             input = scan.nextLine();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             out.println("ERROR: " + e.getMessage());
         }
     }
@@ -590,8 +565,7 @@ public class ProfessorController implements Controller {
             }
             out.print("Press Enter to Return");
             input = scan.nextLine();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             out.println("ERROR: " + e.getMessage());
         }
 
@@ -602,8 +576,7 @@ public class ProfessorController implements Controller {
             out.print("\nPlease Enter The Course You Want to Add The Question To: ");
             String input = scan.nextLine();
             QuestionController.getQuestionController().createQuestion(input);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             out.println("ERROR: " + e.getMessage());
         }
     }
@@ -611,8 +584,8 @@ public class ProfessorController implements Controller {
     private void addRemoveQuestionFromExercise() {
 
     }
-    public void logOut(){
+
+    private void logOut() {
         System.out.println("Good-bye");
-        System.exit(0);
     }
 }

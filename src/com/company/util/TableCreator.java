@@ -9,7 +9,7 @@ import java.sql.*;
 
 public class TableCreator {
 
-    public static void createAll() throws IOException{
+    public static void createAll() throws IOException {
 
         Connection conn = DBConnector.getConnector().getConn();
         ScriptRunner runner = new ScriptRunner(conn, false, false);
@@ -27,7 +27,7 @@ public class TableCreator {
         }
     }
 
-    public static void resetDB() throws IOException{
+    public static void resetDB() throws IOException {
         Connection conn = DBConnector.getConnector().getConn();
         ScriptRunner runner = new ScriptRunner(conn, false, false);
         String file = null;
@@ -36,6 +36,8 @@ public class TableCreator {
             file = "./sql/DropTables.sql";
             runner.runScript(new BufferedReader(new FileReader(file)));
             file = "./sql/CreateTables.sql";
+            runner.runScript(new BufferedReader(new FileReader(file)));
+            file = "./sql/CreateTriggers.sql";
             runner.runScript(new BufferedReader(new FileReader(file)));
             file = "./sql/SampleData.sql";
             runner.runScript(new BufferedReader(new FileReader(file)));
