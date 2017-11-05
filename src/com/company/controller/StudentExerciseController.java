@@ -50,7 +50,7 @@ public class StudentExerciseController implements Controller {
             landingPageAdaptive();
         }
         else{
-            landingPage();
+            this.landingPage();
         }
 
     }
@@ -96,6 +96,7 @@ public class StudentExerciseController implements Controller {
                 case "c":
                 case "d":
                     studentResponses.add(answerHashMap.get(studentResponse));
+                    q.setStudentAnswer(answerHashMap.get(studentResponse));
                     break;
                 case "e":
                     String hint = q.getHint();
@@ -145,7 +146,7 @@ public class StudentExerciseController implements Controller {
 
         ArrayList<Question> sortedQuestions = new ArrayList<>();
 
-        // that's right.  Merge sort FTW.  May the powers of O(n^2) rain down upon us!
+        // that's right.  Insertion sort FTW.  May the powers of O(n^2) rain down upon us!
 
         for (int difficulty = 0; difficulty < 6; difficulty ++){
             for (Question q : questions){
@@ -175,6 +176,7 @@ public class StudentExerciseController implements Controller {
         }
 
         printReport();
+
     }
 
     public void landingPage(){
@@ -186,6 +188,7 @@ public class StudentExerciseController implements Controller {
             displayAnswersAndGetResponse(q);
         }
         printReport();
+
     }
 
     private void displayQuestionAndAnswers(Question q){
@@ -219,6 +222,7 @@ public class StudentExerciseController implements Controller {
             }
             allAnswersToDisplay.add(correctAnswer);
             correctAnswers.add(correctAnswer);
+            q.setActualAnswer(correctAnswer);
 
             Collections.shuffle(allAnswersToDisplay);
 
@@ -227,7 +231,7 @@ public class StudentExerciseController implements Controller {
             for (int i = 0; i < allAnswersToDisplay.size(); i ++){
                 Answer ans = allAnswersToDisplay.get(i);
                 answerHashMap.put(responses[i], ans);
-                System.out.println("   " +responses[i] + "): " + answerHashMap.get(responses[i]).getText());
+                System.out.println("   " + responses[i] + "): " + answerHashMap.get(responses[i]).getText());
             }
             System.out.println("   e): Hint");
         }
@@ -246,6 +250,7 @@ public class StudentExerciseController implements Controller {
                 parameterIDs.add(a.getParameterID());
         }
         int parametersToUse = rand.nextInt(parameterIDs.size()) + 1;
+        question.setParamIndex(parametersToUse);
 
         while (allAnswersToDisplay.size() < 3){
             int yolo = rand.nextInt(question.answers.size()-1);
@@ -264,6 +269,7 @@ public class StudentExerciseController implements Controller {
                     correctAnswerCandidate.getParameterID() == parametersToUse) {
                 allAnswersToDisplay.add(correctAnswerCandidate);
                 correctAnswers.add(correctAnswerCandidate);
+                question.setActualAnswer(correctAnswerCandidate);
             }
         }
 
@@ -323,7 +329,5 @@ public class StudentExerciseController implements Controller {
         System.out.println("Press enter to continue...");
         scanner.nextLine();
 
-
-        StudentController.getInstance().landingPage();
     }
 }

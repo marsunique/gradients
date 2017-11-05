@@ -9,9 +9,7 @@ public class Answer {
     public ArrayList<String> paramVals;
 
 
-    public Answer (){
-        paramVals = new ArrayList<>();
-    }
+    public Answer (){ paramVals = new ArrayList<>(); }
 
     public int getAnsID() {
         return ansID;

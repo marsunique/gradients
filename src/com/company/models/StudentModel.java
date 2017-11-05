@@ -1,17 +1,13 @@
 package com.company.models;
 
-import com.company.objects.Course;
-import com.company.objects.Exercise;
-import com.company.objects.Student;
+import com.company.objects.*;
 
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.HashMap;
+import java.util.*;
 
 
 public class StudentModel extends ModelBase {
@@ -157,15 +153,107 @@ public class StudentModel extends ModelBase {
         }catch(Exception e){
             System.out.println("Error in getExerciseAttempt() method in StudentModel.java");
         }
-
-
-
         return null;
+    }
+
+    public Exercise getExerciseForReport(int att_id, int ex_id){
+        try{
+            Statement statement = conn.createStatement();
+            String query = "SELECT * " +
+                            "FROM Gradients.AttAnswers AS ans " +
+                            "INNER JOIN Gradients.Attempt AS att ON att.att_id = ans.att_id " +
+                            "WHERE att.att_id = " + att_id +";";
+
+            ResultSet rs = statement.executeQuery(query);
+
+            Exercise exercise = ExerciseModel.getExerciseModel().getExerciseById(ex_id);
 
 
+            while (rs.next()){
+                List<Question> questions = new ArrayList<Question>();
+                List<Answer> answers = new ArrayList<Answer>();
+
+               Answer response = getAnswerFromDb(rs.getInt("ans_id"));
+               Answer correctResponse = getAnswerFromDb(rs.getInt("correct_ans_id"));
+               int q_id = rs.getInt("ques_id");
+               int pid = correctResponse.getParameterID();
+
+               Question question = getQuestionFromDb(rs.getInt("ques_id"), correctResponse.getParameterID());
+               question.setStudentAnswer(response);
+               question.setActualAnswer(correctResponse);
+               exercise.questions.add(question);
+            }
+            return exercise;
+        }catch(Exception e){
+            System.out.println("Error in getExerciseAttempt() method in StudentModel.java");
+        }
+        return null;
+    }
+
+    private Answer getAnswerFromDb(int ans_id){
+        try{
+            Statement statement = conn.createStatement();
+            Answer answerToReturn = new Answer();
+            String query = "SELECT * " +
+                    "FROM Gradients.Answer " +
+                    "WHERE ans_id = " + ans_id +";";
+
+            ResultSet rs = statement.executeQuery(query);
+
+            while (rs.next()){
+                answerToReturn.setText(rs.getString("text"));
+                answerToReturn.setAnsID(rs.getInt("ans_id"));
+                answerToReturn.setQuesID(rs.getInt("ques_id"));
+                answerToReturn.setParameterID(rs.getInt("param_id"));
+            }
+            return answerToReturn;
+        }catch(Exception e){
+            System.out.println("Error in getExerciseAttempt() method in StudentModel.java");
+        }
+        return null;
+    }
+
+    private Question getQuestionFromDb(int ques_id, int param_id){
+        try{
+            Statement statement = conn.createStatement();
+            Question questionToReturn = new Question();
+            String query = "";
+            if (param_id > 0) {
+                query = "SELECT * " +
+                "FROM Gradients.Question AS q " +
+                "INNER JOIN Gradients.Parameters AS p on q.ques_id = p.ques_id " +
+                "WHERE p.ques_id = " + ques_id + " " +
+                "AND p.param_id = " + param_id + ";";
+            }else{
+                query = "SELECT * " +
+                        "FROM Gradients.Question AS q " +
+                        "WHERE q.ques_id = " + ques_id + "; ";
+            }
 
 
+            ResultSet rs = statement.executeQuery(query);
 
+            while (rs.next()){
+                questionToReturn.setText(rs.getString("text"));
+                questionToReturn.setSolution(rs.getString("solution"));
+                questionToReturn.setParamIndex(param_id);
+                questionToReturn.setQuestionID(ques_id);
+                if (param_id > 0){
+                    String paramValsString = rs.getString("param_vals");
+                    if (paramValsString != null){
+                        String[] paramValsArray = paramValsString.split(",");
 
+                        ArrayList<String> arrayList = new ArrayList<>();
+                        Collections.addAll(arrayList, paramValsArray);
+                        questionToReturn.paramVals = arrayList;
+                    }
+                }
+
+            }
+            return questionToReturn;
+        }catch(Exception e){
+            System.out.println("Error in getExerciseAttempt() method in StudentModel.java");
+        }
+        return null;
     }
 }

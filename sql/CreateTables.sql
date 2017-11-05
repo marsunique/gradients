@@ -147,9 +147,11 @@ CREATE TABLE IF NOT EXISTS Attempt
 # This table may not be necessary, if we only need to store the attempt score.
 CREATE TABLE IF NOT EXISTS AttAnswers
 (
-  att_id   INT NOT NULL,
-  ques_id  INT NOT NULL,
-  ans_id   INT NOT NULL,
+  att_id          INT NOT NULL,
+  ques_id         INT NOT NULL,
+  correct_ans_id  INT NOT NULL,
+  ans_id          INT NOT NULL,
+  param_id        INT,
   PRIMARY KEY(att_id, ques_id, ans_id),
   FOREIGN KEY (ans_id, ques_id) REFERENCES Answer (ans_id, ques_id),
   FOREIGN KEY (att_id) REFERENCES Attempt (att_id)

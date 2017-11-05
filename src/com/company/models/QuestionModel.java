@@ -50,7 +50,7 @@ public class QuestionModel extends ModelBase {
 
         String query = "SELECT q.ques_id, q.text, q.difficulty, q.hint, q.solution, q.topic_id, e.ex_id\n" +
                 "FROM exercise e, exquestions eq, question q\n" +
-                "WHERE e.ex_id = 2\n" +
+                "WHERE e.ex_id = " + eid +
                 "      AND e.ex_id = eq.ex_id\n" +
                 "      AND eq.ques_id = q.ques_id\n" +
                 "ORDER BY name;";

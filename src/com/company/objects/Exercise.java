@@ -1,10 +1,12 @@
 package com.company.objects;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Exercise {
     public Exercise() {
-
+        questions = new ArrayList<Question>();
     }
 
     // Required Variables
@@ -18,6 +20,9 @@ public class Exercise {
     private int id;
     private int finalScore;
     private float pointsCorrect, pointsIncorrect;
+    public List<Question> questions;
+
+
 
     public int getId() {
         return id;

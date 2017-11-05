@@ -8,6 +8,7 @@ import com.company.objects.Student;
 import com.company.objects.User;
 import com.sun.org.apache.xerces.internal.impl.xs.SchemaNamespaceSupport;
 import com.sun.org.apache.xpath.internal.SourceTree;
+import oracle.jrockit.jfr.events.DataStructureDescriptor;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -221,31 +222,34 @@ public class TaController implements Controller {
     }
 
     private void viewCourses() {
-        while (true) {
-            String title = "       " + " Courses For " + ta.firstName + " " + ta.lastName;
-            System.out.println(hlines(title));
-            System.out.println(title);
-            System.out.println(hlines(title));
-
-            for (int i = 0; i < ta.enrolled.size(); i++) {
-                System.out.println((i + 1) + " " + ta.enrolled.get(i));
-            }
-            System.out.println(ta.enrolled.size() + 1 + " Back");
-            System.out.println(ta.enrolled.size() + 2 + " Log Out");
-            System.out.print("Please enter corresponding command #: ");
-
-            String input = scanner.nextLine();
-            int result = Integer.valueOf(input.replace(" ", ""));
-            if (result == ta.enrolled.size() + 1) {
-                return;
-            } else if (result == ta.enrolled.size() + 2) {
-                logOut();
-            } else if (1 <= result && result <= ta.enrolled.size()) {
-                viewClassInfo(ta.enrolled.get(result - 1));
-            } else {
-                System.out.println("Invalid input.  Try again:");
-            }
-        }
+        StudentController.getInstance().setUser(ta);
+        StudentController.getInstance().viewCourses();
+        landingPage();
+//        while (true) {
+//            String title = "       " + " Courses For " + ta.firstName + " " + ta.lastName;
+//            System.out.println(hlines(title));
+//            System.out.println(title);
+//            System.out.println(hlines(title));
+//
+//            for (int i = 0; i < ta.enrolled.size(); i++) {
+//                System.out.println((i + 1) + " " + ta.enrolled.get(i));
+//            }
+//            System.out.println(ta.enrolled.size() + 1 + " Back");
+//            System.out.println(ta.enrolled.size() + 2 + " Log Out");
+//            System.out.print("Please enter corresponding command #: ");
+//
+//            String input = scanner.nextLine();
+//            int result = Integer.valueOf(input.replace(" ", ""));
+//            if (result == ta.enrolled.size() + 1) {
+//                return;
+//            } else if (result == ta.enrolled.size() + 2) {
+//                logOut();
+//            } else if (1 <= result && result <= ta.enrolled.size()) {
+//                viewClassInfo(ta.enrolled.get(result - 1));
+//            } else {
+//                System.out.println("Invalid input.  Try again:");
+//            }
+//        }
     }
 
     public void viewClassInfo(String classId) {

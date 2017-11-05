@@ -2,6 +2,7 @@ package com.company.controller;
 
 import com.company.models.StudentModel;
 import com.company.objects.Exercise;
+import com.company.objects.Question;
 import com.company.objects.User;
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -158,6 +159,7 @@ public class StudentController implements Controller {
                         break;
                     case "2":
                         viewPastExercises(classId);
+                        landingPage();
                         break;
                     case "3":
                         viewCourses();
@@ -261,6 +263,8 @@ public class StudentController implements Controller {
                     logOut();
                 }
                 else if (result <= count){
+                    previousExerciseReport(Integer.parseInt(attemptsArrayList.get(Integer.parseInt(input)-1).get("att_id")),
+                            Integer.parseInt(attemptsArrayList.get(Integer.parseInt(input)-1).get("ex_id")));
                     System.out.println("todo");
                 }
                 else{
@@ -271,9 +275,30 @@ public class StudentController implements Controller {
             }
 
         }catch(Exception e){
-            System.out.println("error in viewPastExercises...");
+            System.out.println("No record for this class.");
+            viewPastExercises(classId);
         }
 
+    }
+
+    public void previousExerciseReport(int att_id, int ex_id){
+        Exercise e = StudentModel.getStudentModel().getExerciseForReport(att_id, ex_id);
+
+        String title = "      Review of " + e.getName() + " " + e.getCourseID();
+        System.out.println(hlines(title));
+        System.out.println(title);
+        System.out.println(hlines(title));
+        System.out.println("");
+
+        for (Question q: e.questions){
+            System.out.println("  " + q.getText());
+            System.out.println("");
+            System.out.println("    Student Response: " + q.getStudentAnswer().getText());
+            System.out.println("    Correct Response: " + q.getActualAnswer().getText());
+            System.out.println("    " + q.getSolution());
+            System.out.println("");
+
+        }
     }
 
 

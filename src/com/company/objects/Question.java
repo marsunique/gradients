@@ -11,6 +11,7 @@ public class Question {
     private int topicID;
     private int exerciseID;
     private int questionID;
+    private int paramIndex;
     public List<Answer> answers;
     public ArrayList<String> paramVals;
     private Answer studentAnswer;
@@ -83,5 +84,9 @@ public class Question {
     public void setActualAnswer(Answer a) { this.actualAnswer = a;}
 
     public Answer getActualAnswer() {return this.actualAnswer;}
+
+    public void setParamIndex(int index) {this.paramIndex = index;}
+
+    public int getParamIndex() {return this.paramIndex;}
 
 }
