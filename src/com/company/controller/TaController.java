@@ -204,178 +204,143 @@ public class TaController implements Controller {
     }
 
     private void viewCourses() {
-        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            String title = "       " + " Courses For " + ta.firstName + " " + ta.lastName;
+            System.out.println(hlines(title));
+            System.out.println(title);
+            System.out.println(hlines(title));
 
-        String title = "       " + " Courses For " + ta.firstName + " " + ta.lastName;
-        System.out.println(hlines(title));
-        System.out.println(title);
-        System.out.println(hlines(title));
+            for (int i = 0; i < ta.enrolled.size(); i++) {
+                System.out.println((i + 1) + " " + ta.enrolled.get(i));
+            }
+            System.out.println(ta.enrolled.size() + 1 + " Back");
+            System.out.println((ta.enrolled.size() + 2) + " Log Out");
+            System.out.print("Command #: ");
 
-        for (int i = 0; i < ta.enrolled.size(); i++) {
-            System.out.println((i + 1) + " " + ta.enrolled.get(i));
-        }
-        System.out.println(ta.enrolled.size() + 1 + " Back");
-        System.out.println((ta.enrolled.size() + 2) + " Log Out");
 
-        String input = "";
-        while (input == "") {
-            input = scanner.next();
+            String input = scanner.nextLine();
 
             int result = Integer.valueOf(input.replace(" ", ""));
-
-
             if (result == ta.enrolled.size() + 1) {
-                landingPage();
+                return;
             } else if (result == ta.enrolled.size() + 2) {
                 logOut();
-            } else if (result <= ta.enrolled.size()) {
+            } else if (1 <= result && result <= ta.enrolled.size()) {
                 viewClassInfo(ta.enrolled.get(result - 1));
             } else {
                 System.out.println("Invalid input.  Try again:");
-                input = "";
             }
         }
     }
 
     private void viewClassInfo(String classId) {
-        try {
+        while (true) {
+            try {
 
-            String className = StudentModel.getStudentModel().getCourseName(classId);
+                String className = StudentModel.getStudentModel().getCourseName(classId);
 
-            Scanner scanner = new Scanner(System.in);
+                String title = "       " + classId + " - " + className;
+                System.out.println(hlines(title));
+                System.out.println(title);
+                System.out.println(hlines(title));
 
-            String title = "       " + className + " - " + classId;
-            System.out.println(hlines(title));
-            System.out.println(title);
-            System.out.println(hlines(title));
-
-            System.out.println("1 Current Homeworks");
-            System.out.println("2 Past Homeworks");
-            System.out.println("3 Back");
-            System.out.println("4 Log Out");
-
-            String input = "";
-            while (input == "") {
-                input = scanner.next();
-
-                switch (input) {
-                    case "1":
-                        viewCurrentExercises(classId);
-                        break;
-                    case "2":
-                        viewPastExercises(classId);
-                        landingPage();
-                        break;
-                    case "3":
-                        viewCourses();
-                        break;
-                    case "4":
-                        logOut();
-                        break;
-                    default:
-                        System.out.println("Invalid input.  Try again:");
-                        input = "";
+                System.out.println("1 Current Homeworks");
+                System.out.println("2 Past Homeworks");
+                System.out.println("3 Back");
+                System.out.println("4 Log Out");
+                System.out.print("Command #: ");
+                String input = scanner.nextLine();
+                if (input.equals("1")) {
+                    viewCurrentExercises(classId);
+                } else if (input.equals("2")) {
+                    viewPastExercises(classId);
+                } else if (input.equals("3")) {
+                    break;
+                } else if (input.equals("4")) {
+                    logOut();
+                } else {
+                    System.out.println("Invalid input.  Try again:");
                 }
+            } catch (Exception e) {
+                System.out.println("Can't get student model stuff - from viewClassInfo() method");
             }
-
-        } catch (Exception e) {
-            System.out.println("Can't get student model stuff - from viewClassInfo() method");
         }
-
     }
 
     private void viewCurrentExercises(String classId) {
-        try {
-            ArrayList<Exercise> exercises = StudentModel.getStudentModel().getAvailableExercises(ta.username, classId);
+        while (true) {
+            try {
+                ArrayList<Exercise> exercises = StudentModel.getStudentModel().getAvailableExercises(ta.username, classId);
 
+                String title = "       Available Exercises for " + classId;
+                System.out.println(hlines(title));
+                System.out.println(title);
+                System.out.println(hlines(title));
 
-            Scanner scanner = new Scanner(System.in);
+                for (int i = 0; i < exercises.size(); i++) {
+                    System.out.println((i + 1) + " " + exercises.get(i).getName());
+                }
+                System.out.println((exercises.size() + 1) + " Back");
+                System.out.println((exercises.size() + 2) + " Log Out");
+                System.out.print("Command #: ");
 
-            String title = "       Available Exercises for " + classId;
-            System.out.println(hlines(title));
-            System.out.println(title);
-            System.out.println(hlines(title));
-
-            for (int i = 0; i < exercises.size(); i++) {
-
-                System.out.println((i + 1) + " " + exercises.get(i).getName());
-
-            }
-            System.out.println((exercises.size() + 1) + " Back");
-            System.out.println((exercises.size() + 2) + " Log Out");
-
-
-            String input = "";
-            while (input == "") {
-                input = scanner.next();
-
+                String input = scanner.nextLine();
                 int result = Integer.valueOf(input.replace(" ", ""));
 
                 if (result == exercises.size() + 1) {
-                    viewClassInfo(classId);
+                    break;
                 } else if (result == exercises.size() + 2) {
                     logOut();
-                } else if (result < exercises.size() + 1) {
+                } else if (1 <= result && result <= exercises.size()) {
                     StudentExerciseController.getInstance().setUser(ta);
                     StudentExerciseController.getInstance().landingPage(exercises.get(result - 1));
                 } else {
                     System.out.println("Invalid input.  Try again:");
-                    input = "";
                 }
+            } catch (Exception e) {
+                System.out.println("issue getting current classes for this student, called from getCurrentExercises()");
             }
-
-        } catch (Exception e) {
-            System.out.println("issue getting current classes for this student, called from getCurrentExercises()");
         }
 
     }
 
     private void viewPastExercises(String classId) {
+        while (true) {
+            String title = "       Previous Exercises for " + classId;
+            System.out.println(hlines(title));
+            System.out.println(title);
+            System.out.println(hlines(title));
+            try {
+                ArrayList<HashMap<String, String>> attemptsArrayList = StudentModel.getStudentModel().getExerciseAttempt(ta.username, classId);
 
-        Scanner scanner = new Scanner(System.in);
+                int count = 0;
+                for (HashMap<String, String> hm : attemptsArrayList) {
+                    count++;
+                    System.out.println(count + " " + hm.get("name"));
+                }
+                System.out.println((count + 1) + " Back");
+                System.out.println((count + 2) + " Log Out");
+                System.out.print("Command #: ");
 
-        String title = "       Previous Exercises for " + classId;
-        System.out.println(hlines(title));
-        System.out.println(title);
-        System.out.println(hlines(title));
-
-
-        try {
-            ArrayList<HashMap<String, String>> attemptsArrayList = StudentModel.getStudentModel().getExerciseAttempt(ta.username, classId);
-
-            int count = 0;
-            for (HashMap<String, String> hm : attemptsArrayList) {
-                count++;
-                System.out.println(count + " " + hm.get("name"));
-            }
-            System.out.println((count + 1) + " Back");
-            System.out.println((count + 2) + " Log Out");
-            System.out.println();
-
-            String input = "";
-            while (input == "") {
-                input = scanner.nextLine();
-
+                String input = scanner.nextLine();
                 int result = Integer.valueOf(input.replace(" ", ""));
-
                 if (result == count + 1) {
-                    viewClassInfo(classId);
+                    break;
                 } else if (result == count + 2) {
                     logOut();
-                } else if (result <= count) {
-                    previousExerciseReport(Integer.parseInt(attemptsArrayList.get(Integer.parseInt(input) - 1).get("att_id")),
-                            Integer.parseInt(attemptsArrayList.get(Integer.parseInt(input) - 1).get("ex_id")));
+                } else if (1 <= result && result <= count) {
+                    previousExerciseReport(Integer.parseInt(attemptsArrayList.get(result - 1).get("att_id")),
+                            Integer.parseInt(attemptsArrayList.get(result - 1).get("ex_id")));
                     System.out.println("todo");
                 } else {
                     System.out.println("Invalid input.  Try again:");
-                    input = "";
                 }
-
+            } catch (Exception e) {
+                System.out.println("No record for this exercise.");
+                System.out.println("ERRROR: " + e.getMessage());
+                System.out.print("Press Enter to Continue");
+                String input = scanner.nextLine();
             }
-
-        } catch (Exception e) {
-            System.out.println("No record for this class.");
-            viewPastExercises(classId);
         }
 
     }
@@ -387,7 +352,6 @@ public class TaController implements Controller {
         System.out.println(hlines(title));
         System.out.println(title);
         System.out.println(hlines(title));
-        System.out.println("");
 
         for (Question q : e.questions) {
             System.out.println("  " + q.getText());
@@ -396,10 +360,10 @@ public class TaController implements Controller {
             System.out.println("    Correct Response: " + q.getActualAnswer().getText());
             System.out.println("    " + q.getSolution());
             System.out.println("");
-
         }
+        System.out.print("Press Enter to Continue");
+        String input = scanner.nextLine();
     }
-
 
     public void logOut() {
         System.out.println("Good-bye");
