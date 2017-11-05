@@ -67,9 +67,8 @@ public class TaController implements Controller {
                     break;
                 case "5":
                     logOut();
-                    return;
                 default:
-                    System.out.println("Improper command. Try again.");
+                    System.out.println("Invalid command, try again.");
             }
         }
     }
@@ -217,7 +216,6 @@ public class TaController implements Controller {
             System.out.println((ta.enrolled.size() + 2) + " Log Out");
             System.out.print("Command #: ");
 
-
             String input = scanner.nextLine();
 
             int result = Integer.valueOf(input.replace(" ", ""));
@@ -250,6 +248,7 @@ public class TaController implements Controller {
                 System.out.println("4 Log Out");
                 System.out.print("Command #: ");
                 String input = scanner.nextLine();
+
                 if (input.equals("1")) {
                     viewCurrentExercises(classId);
                 } else if (input.equals("2")) {
@@ -310,6 +309,7 @@ public class TaController implements Controller {
             System.out.println(hlines(title));
             System.out.println(title);
             System.out.println(hlines(title));
+
             try {
                 ArrayList<HashMap<String, String>> attemptsArrayList = StudentModel.getStudentModel().getExerciseAttempt(ta.username, classId);
 
@@ -324,6 +324,7 @@ public class TaController implements Controller {
 
                 String input = scanner.nextLine();
                 int result = Integer.valueOf(input.replace(" ", ""));
+
                 if (result == count + 1) {
                     break;
                 } else if (result == count + 2) {
@@ -337,12 +338,10 @@ public class TaController implements Controller {
                 }
             } catch (Exception e) {
                 System.out.println("No record for this exercise.");
-                System.out.println("ERRROR: " + e.getMessage());
                 System.out.print("Press Enter to Continue");
                 String input = scanner.nextLine();
             }
         }
-
     }
 
     private void previousExerciseReport(int att_id, int ex_id) {
@@ -367,5 +366,6 @@ public class TaController implements Controller {
 
     public void logOut() {
         System.out.println("Good-bye");
+        System.exit(0);
     }
 }

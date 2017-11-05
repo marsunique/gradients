@@ -751,5 +751,6 @@ public class ProfessorController implements Controller {
 
     private void logOut() {
         System.out.println("Good-bye");
+        System.exit(0);
     }
 }
