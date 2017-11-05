@@ -3,14 +3,23 @@ package com.company.controller;
 import com.company.models.CourseModel;
 import com.company.models.StudentModel;
 import com.company.models.UserModel;
+import com.company.models.ProfessorModel;
 import com.company.objects.Course;
 import com.company.objects.Exercise;
 import com.company.objects.Student;
 import com.company.objects.User;
 
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Scanner;
+import java.text.DateFormat;
 
+
+import static java.lang.System.in;
 import static java.lang.System.out;
 
 public class ProfessorController implements Controller {
@@ -85,26 +94,28 @@ public class ProfessorController implements Controller {
     }
 
     private void viewProfile() {
-        out.println();
-        out.println("Name: " + prof.firstName + " " + prof.lastName);
-        out.println("ID: " + prof.username);
-        for (String cid : prof.teaches) {
-            out.println("Course: " + cid);
-            Course c = CourseModel.getCourseModel().getCourseByID(cid);
-            for (String ex : c.exerciseNames) {
-                out.println(" - " + ex);
+        while (true) {
+            out.println();
+            out.println("Name: " + prof.firstName + " " + prof.lastName);
+            out.println("ID: " + prof.username);
+            for (String cid : prof.teaches) {
+                out.println("Course: " + cid);
+                Course c = CourseModel.getCourseModel().getCourseByID(cid);
+                for (String ex : c.exerciseNames) {
+                    out.println(" - " + ex);
+                }
             }
+            out.print("Press Enter to Return.");
+            String input = scan.nextLine();
+            if (input.equals("")) break;
         }
-        out.print("Press Enter to Return.");
-        scan.nextLine();
-
     }
 
     private void courseViewAdd() {
         while (true) {
             out.println();
             out.println("Enter one of the following options:");
-            out.println("1 Search Course");
+            out.println("1 View Course");
             out.println("2 Add Course");
             out.println("3 Return");
             out.print("Command #: ");
@@ -123,21 +134,66 @@ public class ProfessorController implements Controller {
                     break;
             }
         }
-
     }
 
     private void addCourse() {
         Course c = new Course();
-        String input;
+        int input;
+        String startDate,endDate;
+        Date utilstartDate = new Date();
+        Date utilendDate = new Date();
+
 
         out.print("Enter a course id (Ex. CSC440): ");
-        input = scan.nextLine();
         c.id = scan.nextLine();
 
 
         out.print("Enter a course name: ");
+        c.name=scan.nextLine();
+
         out.print("Enter a start date (yyyy-MM-dd): ");
+        startDate=scan.nextLine();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            utilstartDate = (Date)formatter.parse(startDate);
+            c.start = new java.sql.Date(utilstartDate.getTime());
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
         out.print("Enter an end date (yyyy-MM-dd): ");
+        endDate=scan.nextLine();
+        try {
+            utilendDate = (Date)formatter.parse(endDate);
+            c.end = new java.sql.Date(utilendDate.getTime());
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        out.println("Enter the instructor id:");
+        c.instructor=scan.nextLine();
+
+        out.println("Enter whether this is a graduate course or not :");
+        out.println("Enter 1 if it is a graduate course, else enter if its 0");
+        input = scan.nextInt();
+        if(input==0)
+            c.graduate=false;
+        else
+            c.graduate=true;
+
+        out.println("Enter the maximum no. of students that can enroll:");
+        c.maxEnrolled=scan.nextInt();
+
+        try {
+            ProfessorModel.getProfessorModel().courseAdd(c.id,c.name,c.start,c.end,c.instructor,input,c.maxEnrolled);
+            out.println("You have successfully created a new course");
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e.getMessage());
+        }
+
         //TAs
         //Students
         //Topics
@@ -162,61 +218,154 @@ public class ProfessorController implements Controller {
                         System.out.println(" - " + e);
                     }
                 }
-            } else {
+            }
+            else {
                 out.println("This course does not exist.");
             }
-        } else {
+        }
+        else {
             out.println("That is not a valid course id.");
         }
     }
 
     private void studentEnrollDrop() {
+        while (true) {
+            out.println();
+            out.println("Enter one of the following options:");
+            out.println("1 Add a Student");
+            out.println("2 Drop a Student");
+            out.println("3 Return");
+            out.print("Command #: ");
+            String input = scan.nextLine().toUpperCase();
+            if (input.equals("1")) {
+                addStudent();
+            }
+            else if (input.equals("2")) {
+                dropStudent();
+            }
+            else if (input.equals("3")) {
+                break;
+            }
+            else {
+                out.println("Invalid input.  Try again:");
+            }
+        }
+    }
 
+    private void addStudent()  {
+        Student s = new Student();
+        out.print("Enter a student id: ");
+        s.studentID = scan.nextLine();
+        out.print("Enter a course id: ");
+        s.courseID = scan.nextLine();
+        while (true) {
+            out.println("Add " + s.studentID + " to " + s.courseID + "? (YES/NO)");
+            String input = scan.nextLine();
+            if (input.toUpperCase().equals("YES")) {
+                try {
+                    ProfessorModel.getProfessorModel().enrollStudent(s.studentID, s.courseID);
+                    out.println("You have successfully enrolled the student with ID " + s.studentID + " for the course " + s.courseID);
+                } catch (Exception e) {
+                    out.println("ERROR: " + e.getMessage());
+                }
+                break;
+            }
+            else if (input.toUpperCase().equals("NO")) {
+                out.println("Canceled");
+                break;
+            }
+            else {
+                out.println("Please enter YES or NO");
+            }
+        }
+    }
+
+    private void dropStudent(){
+        Student s = new Student();
+        out.print("Enter a student id: ");
+        s.studentID = scan.nextLine();
+        out.print("Enter a course id: ");
+        s.courseID = scan.nextLine();
+        while (true) {
+            out.println("Drop " + s.studentID + " from " + s.courseID + "? (YES/NO)");
+            String input = scan.nextLine();
+            if (input.toUpperCase().equals("YES")) {
+                try {
+                    ProfessorModel.getProfessorModel().studentEnrollDrop(s.studentID, s.courseID);
+                    out.println("You have successfully dropped the course " + s.courseID + " for student with ID " + s.studentID);
+                } catch (Exception e) {
+                    out.println("ERROR: " + e.getMessage());
+                }
+                break;
+            }
+            else if (input.toUpperCase().equals("NO")) {
+                System.out.println("Canceled");
+                break;
+            }
+            else {
+                System.out.println("Please enter YES or NO");
+            }
+        }
     }
 
     private void viewReport() {
-        out.println();
-        if (prof.teaches.isEmpty()) {
-            out.println("You do not TA for any courses.");
-        } else {
-            for (String cid : prof.teaches) {
-                Course c = CourseModel.getCourseModel().getCourseByID(cid);
-                List<Student> studentList = StudentModel.getStudentModel().getStudentsByCourse(c);
+        while (true) {
+            out.println();
+            if (prof.teaches.isEmpty()) {
+                out.println("You do not TA for any courses.");
+            } else {
+                for (String cid : prof.teaches) {
+                    Course c = CourseModel.getCourseModel().getCourseByID(cid);
+                    List<Student> studentList = StudentModel.getStudentModel().getStudentsByCourse(c);
 
-                out.println("COURSE: " + cid);
-                out.printf("|%-15s|%-15s|%-15s|", " id", " first name", " last name");
-                for (int eid : c.exerciseIds) {
-                    out.printf("%5s|", "EX" + eid);
-                }
-                out.println();
-                out.print("|---------------|---------------|---------------|");
-                for (int eid : c.exerciseIds) {
-                    out.print("-----|");
-                }
-
-                for (Student s : studentList) {
+                    out.println("COURSE: " + cid);
+                    out.printf("|%-15s|%-15s|%-15s|", " id", " first name", " last name");
+                    for (int eid : c.exerciseIds) {
+                        out.printf("%5s|", "EX" + eid);
+                    }
                     out.println();
-                    out.printf("|%-15s|%-15s|%-15s|", s.studentID, s.firstName, s.lastName);
-                    for (float attempt : s.exAttempts) {
-                        out.printf("%5.2f|", attempt);
+                    out.print("|---------------|---------------|---------------|");
+                    for (int eid : c.exerciseIds) {
+                        out.print("-----|");
                     }
 
-                }
-                out.println();
-                out.print("|---------------|---------------|---------------|");
-                for (int eid : c.exerciseIds) {
-                    out.print("-----|");
-                }
-                out.println();
-            }
-        }
+                    for (Student s : studentList) {
+                        out.println();
+                        out.printf("|%-15s|%-15s|%-15s|", s.studentID, s.firstName, s.lastName);
+                        for (float attempt : s.exAttempts) {
+                            out.printf("%5.2f|", attempt);
+                        }
 
-        out.print("Press Enter to Return.");
-        scan.nextLine();
+                    }
+                    out.println();
+                    out.print("|---------------|---------------|---------------|");
+                    for (int eid : c.exerciseIds) {
+                        out.print("-----|");
+                    }
+                    out.println();
+                }
+            }
+
+            out.print("Press Enter to Return.");
+            String input = scan.nextLine();
+            if (input.equals("")) break;
+        }
     }
 
     private void setupTA() {
+        Student s = new Student();
+        out.print("Enter a student id: ");
+        s.studentID = scan.nextLine();
+        out.print("Enter a course id for which the student would be TA for: ");
+        s.courseID = scan.nextLine();
 
+        try {
+            ProfessorModel.getProfessorModel().setupTA(s.studentID,s.courseID);
+            System.out.println("You have successfully added "+ s.studentID+ " as TA for "+s.courseID );
+            return;
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e.getMessage());
+        }
     }
 
     private void exerciseViewAdd() {

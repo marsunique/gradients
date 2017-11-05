@@ -3,10 +3,7 @@ package com.company.models;
 import com.company.util.DBConnector;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class ProfessorModel extends ModelBase{
     private static ProfessorModel professorModel = null;
@@ -38,21 +35,23 @@ public class ProfessorModel extends ModelBase{
 
     }
 
-    public void courseViewAdd() {
-
-    }
-
-    public void enrollStudent(String studentID, int courseID) throws SQLException {
+    public void courseAdd(String courseID, String courseName, Date startDate, Date endDate, String instructorID, int isGraduate, int maxEnrolled) throws SQLException {
         Statement statement = conn.createStatement();
-        String query = "INSERT INTO EnrolledIn(student_id, course_id) VALUES('"+
-                studentID + "'," + courseID +")";
+        String query = "INSERT INTO Course(course_id, course_name, start_date, end_date, inst_id, graduate, max_enrolled, num_enrolled) VALUES('"+courseID+"','"+courseName+"','"+startDate+"','"+endDate+"','"+instructorID+"',"+isGraduate+","+maxEnrolled+","+0+")";
         statement.executeUpdate(query);
     }
 
-    public void studentEnrollDrop(String studentID, int courseID) throws SQLException {
+    public void enrollStudent(String studentID, String courseID) throws SQLException {
+        Statement statement = conn.createStatement();
+        String query = "INSERT INTO EnrolledIn(student_id, course_id) VALUES('"+
+                studentID + "','" + courseID +"')";
+        statement.executeUpdate(query);
+    }
+
+    public void studentEnrollDrop(String studentID, String courseID) throws SQLException {
         Statement statement = conn.createStatement();
         String query = "DELETE FROM EnrolledIn WHERE student_id = '" + studentID + "' AND " +
-                "course_id = " + courseID + ";";
+                "course_id = '" + courseID + "';";
         statement.executeUpdate(query);
     }
 
@@ -60,11 +59,11 @@ public class ProfessorModel extends ModelBase{
 
     }
 
-    public void setupTA(String TAId, int courseID) throws SQLException{
+    public void setupTA(String TAId, String courseID) throws SQLException{
         Statement statement = conn.createStatement();
 
         String query = "INSERT INTO TAFor(ta_id, course_id) VALUES('"+
-                TAId + "'," + courseID +")";
+                TAId + "','" + courseID +"')";
         statement.executeUpdate(query);
     }
 

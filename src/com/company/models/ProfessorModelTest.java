@@ -6,6 +6,6 @@ import java.sql.SQLException;
 public class ProfessorModelTest {
     public static void main(String[] args) throws IOException, SQLException {
         ProfessorModel professorModel = ProfessorModel.getProfessorModel();
-        professorModel.studentEnrollDrop("gyu9", 540);
+        professorModel.studentEnrollDrop("gyu9", "CSC540");
     }
 }

@@ -5,6 +5,10 @@ import com.company.objects.Course;
 
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CourseModel extends ModelBase {
 
@@ -101,4 +105,30 @@ public class CourseModel extends ModelBase {
         return statement.execute();
     }
 
+    public Map listCourseTopics(String couresID) throws SQLException {
+        String query = "SELECT * FROM CourseTopic WHERE course_id = ?";
+        PreparedStatement statement = conn.prepareStatement(query);
+
+        statement.setString(1, couresID);
+
+        ResultSet rs = statement.executeQuery();
+
+        List<Integer> topicIDS = new ArrayList<>();
+
+        while (rs.next()) {
+            topicIDS.add(rs.getInt("topic_id"));
+        }
+
+        Map<Integer, String> topics = new HashMap<>();
+
+        for(Integer topicID : topicIDS) {
+            String query1 = "SELECT * FROM Topic WHERE topic_id = ?";
+            PreparedStatement  stm = conn.prepareStatement(query1);
+            stm.setInt(1, topicID);
+            ResultSet rsTopics = stm.executeQuery();
+            rsTopics.next();
+            topics.put(topicID, rsTopics.getString("name"));
+        }
+        return topics;
+    }
 }

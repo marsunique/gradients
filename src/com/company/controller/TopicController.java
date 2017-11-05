@@ -16,7 +16,7 @@ public class TopicController extends AbsController{
     }
 
     public void listTopics() {
-        System.out.println();
+
     }
 
     @Override
