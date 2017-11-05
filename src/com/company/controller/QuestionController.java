@@ -127,16 +127,14 @@ public class QuestionController extends AbsController{
     public List<Question> getQuestionsFromTopic(int topicID) throws IOException, SQLException {
 
         List<Question> quesList = QuestionModel.getQuestionModel().getQuestionsByTopic(topicID);
-
-        for (Question question : quesList) {
-            System.out.println("Question ID : " + question.getQuestionID());
-            System.out.println("Text: " + question.getDifficulty());
-            System.out.println();
-        }
-
         return quesList;
     }
 
+    public Question getQuestionByID(int id) throws IOException, SQLException {
+
+        Question question = QuestionModel.getQuestionModel().getQuestionByID(id);
+        return question;
+    }
 
     @Override
     public void landingPage() {
