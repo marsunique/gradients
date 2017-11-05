@@ -332,7 +332,6 @@ public class TaController implements Controller {
                 } else if (1 <= result && result <= count) {
                     previousExerciseReport(Integer.parseInt(attemptsArrayList.get(result - 1).get("att_id")),
                             Integer.parseInt(attemptsArrayList.get(result - 1).get("ex_id")));
-                    System.out.println("todo");
                 } else {
                     System.out.println("Invalid input.  Try again:");
                 }
