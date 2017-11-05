@@ -112,9 +112,9 @@ CREATE TABLE IF NOT EXISTS Question
 
 CREATE TABLE IF NOT EXISTS Parameters
 (
-  param_id   INT NOT NULL AUTO_INCREMENT,
+  param_id   INT  NOT NULL AUTO_INCREMENT,
   param_vals TEXT NOT NULL,
-  ques_id    INT NOT NULL,
+  ques_id    INT  NOT NULL,
   PRIMARY KEY (param_id, ques_id),
   FOREIGN KEY (ques_id) REFERENCES Question (ques_id)
 );
@@ -139,20 +139,23 @@ CREATE TABLE IF NOT EXISTS Attempt
   student_id VARCHAR(255) NOT NULL,
   ex_id      INT          NOT NULL,
   course_id  VARCHAR(6)   NOT NULL,
+  att_num    INT,
   PRIMARY KEY (att_id),
-  FOREIGN KEY (student_id) REFERENCES Student (student_id) ON DELETE CASCADE,
-  FOREIGN KEY (ex_id, course_id) REFERENCES Exercise (ex_id, course_id) ON DELETE CASCADE
+  FOREIGN KEY (student_id) REFERENCES Student (student_id)
+    ON DELETE CASCADE,
+  FOREIGN KEY (ex_id, course_id) REFERENCES Exercise (ex_id, course_id)
+    ON DELETE CASCADE
 );
 
 # This table may not be necessary, if we only need to store the attempt score.
 CREATE TABLE IF NOT EXISTS AttAnswers
 (
-  att_id          INT NOT NULL,
-  ques_id         INT NOT NULL,
-  correct_ans_id  INT NOT NULL,
-  ans_id          INT NOT NULL,
-  param_id        INT,
-  PRIMARY KEY(att_id, ques_id, ans_id),
+  att_id         INT NOT NULL,
+  ques_id        INT NOT NULL,
+  correct_ans_id INT NOT NULL,
+  ans_id         INT NOT NULL,
+  param_id       INT,
+  PRIMARY KEY (att_id, ques_id, ans_id),
   FOREIGN KEY (ans_id, ques_id) REFERENCES Answer (ans_id, ques_id),
   FOREIGN KEY (att_id) REFERENCES Attempt (att_id)
 );
@@ -162,6 +165,7 @@ CREATE TABLE IF NOT EXISTS ExQuestions
   ex_id   INT NOT NULL,
   ques_id INT NOT NULL,
   PRIMARY KEY (ex_id, ques_id),
-  FOREIGN KEY (ex_id) REFERENCES Exercise (ex_id) ON DELETE CASCADE,
+  FOREIGN KEY (ex_id) REFERENCES Exercise (ex_id)
+    ON DELETE CASCADE,
   FOREIGN KEY (ques_id) REFERENCES Question (ques_id)
 );
