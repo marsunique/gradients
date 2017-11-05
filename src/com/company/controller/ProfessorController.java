@@ -1,15 +1,13 @@
 package com.company.controller;
 
 import com.company.models.*;
-import com.company.objects.Course;
-import com.company.objects.Exercise;
-import com.company.objects.Student;
-import com.company.objects.User;
+import com.company.objects.*;
 import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -526,13 +524,93 @@ public class ProfessorController implements Controller {
     }
 
     private void searchAddQuestionToBank() {
+        while (true) {
+            out.println();
+            out.println("Enter one of the following options:");
+            out.println("1 Search Question By Question ID");
+            out.println("2 Search Question By Topic");
+            out.println("3 Add Question");
+            out.println("4 Back");
+            out.print("Command #: ");
+            String input = scan.nextLine();
+            switch (input) {
+                case "1":
+                    searchQuestionByID();
+                    break;
+                case "2":
+                    searchQuestionByTopic();
+                    break;
+                case "3":
+                    addQuestion();
+                    break;
+                case "4":
+                    return;
+                default:
+                    out.println("Invalid command, try again.");
+                    break;
+            }
+        }
+    }
 
+    private void searchQuestionByID() {
+        out.print("\nPlease Enter Question ID: ");
+        try {
+            String input = scan.nextLine();
+            int id = Integer.parseInt(input);
+            Question question = QuestionModel.getQuestionModel().getQuestionByID(id);
+            out.println("Question ID : " + question.getQuestionID());
+            out.println("Text: " + question.getDifficulty());
+            out.print("Press Enter to Return");
+            input = scan.nextLine();
+        }
+        catch (Exception e) {
+            out.println("ERROR: " + e.getMessage());
+        }
+    }
+
+    private void searchQuestionByTopic() {
+        out.println("--------------------");
+        out.println("   Current topics");
+        out.println("--------------------");
+        try {
+            ArrayList<String> topics = TopicModel.getTopicModel().getAllTopics();
+            for (String topic : topics) {
+                out.println(topic);
+            }
+            out.print("Choose Topic id: ");
+            String input = scan.nextLine();
+            int id = Integer.parseInt(input);
+            List<Question> questions = QuestionController.getQuestionController().getQuestionsFromTopic(id);
+            out.println("\nQuestion that has topic -- " + TopicModel.getTopicModel().getTopicByID(id));
+            out.println("---------------------------------");
+            for (Question question : questions) {
+                out.println("Question ID : " + question.getQuestionID());
+                out.println("Text: " + question.getDifficulty());
+                out.println("---------------------------------");
+            }
+            out.print("Press Enter to Return");
+            input = scan.nextLine();
+        }
+        catch (Exception e) {
+            out.println("ERROR: " + e.getMessage());
+        }
+
+    }
+
+    private void addQuestion() {
+        try {
+            out.print("\nPlease Enter The Course You Want to Add The Question To: ");
+            String input = scan.nextLine();
+            QuestionController.getQuestionController().createQuestion(input);
+        }
+        catch (Exception e) {
+            out.println("ERROR: " + e.getMessage());
+        }
     }
 
     private void addRemoveQuestionFromExercise() {
 
     }
-
     public void logOut(){
         System.out.println("Good-bye");
         System.exit(0);
