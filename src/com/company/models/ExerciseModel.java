@@ -1,5 +1,6 @@
 package com.company.models;
 
+import com.company.controller.QuestionController;
 import com.company.objects.Course;
 import com.company.objects.Exercise;
 import com.company.objects.Student;
@@ -63,6 +64,15 @@ public class ExerciseModel extends ModelBase {
         return score;
     }
 
+    public Exercise getExerciseById(String id) {
+        try {
+            int eid = Integer.parseInt(id);
+            return getExerciseById(eid);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
     public Exercise getExerciseById(int id) {
         Exercise ret = new Exercise();
         Statement stmt = null;
@@ -97,6 +107,24 @@ public class ExerciseModel extends ModelBase {
 
         if (ret.getCourseID() == null) {
             return null;
+        }
+
+        query = "SELECT * " +
+                "FROM exquestions " +
+                "WHERE ex_id=" + id + "";
+
+        try {
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                int qid = rs.getInt("ques_id");
+                ret.questions.add(QuestionController.getQuestionController().getQuestionByID(qid));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return ret;
@@ -147,5 +175,33 @@ public class ExerciseModel extends ModelBase {
         statement.setInt(2, exID);
 
         statement.execute();
+    }
+
+    public boolean removeQuestionFromExercise(int question, int exercise) {
+        String query = "DELETE FROM ExQuestions WHERE ex_id = ? AND ques_id = ?";
+        PreparedStatement statement = null;
+        try {
+            statement = conn.prepareStatement(query);
+            statement.setInt(1, exercise);
+            statement.setInt(2, question);
+            return statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean addQuestionToExercise(int question, int exercise) {
+        String query = "REPLACE INTO ExQuestions (ex_id, ques_id) VALUES (?, ?)";
+        PreparedStatement statement = null;
+        try {
+            statement = conn.prepareStatement(query);
+            statement.setInt(1, exercise);
+            statement.setInt(2, question);
+            return statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

@@ -3,6 +3,7 @@ package com.company.controller;
 import com.company.models.*;
 import com.company.objects.*;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.text.ParseException;
@@ -535,7 +536,7 @@ public class ProfessorController implements Controller {
             int id = Integer.parseInt(input);
             Question question = QuestionModel.getQuestionModel().getQuestionByID(id);
             out.println("Question ID : " + question.getQuestionID());
-            out.println("Text: " + question.getDifficulty());
+            out.println("Text: " + question.getText());
             out.print("Press Enter to Return");
             input = scan.nextLine();
         } catch (Exception e) {
@@ -560,7 +561,7 @@ public class ProfessorController implements Controller {
             out.println("---------------------------------");
             for (Question question : questions) {
                 out.println("Question ID : " + question.getQuestionID());
-                out.println("Text: " + question.getDifficulty());
+                out.println("Text: " + question.getText());
                 out.println("---------------------------------");
             }
             out.print("Press Enter to Return");
@@ -582,7 +583,170 @@ public class ProfessorController implements Controller {
     }
 
     private void addRemoveQuestionFromExercise() {
+        Exercise e = null;
+        Course c = null;
+        String input;
 
+        while (c == null) {
+            out.print("Enter the course id for the exercise or 'B' to go back: ");
+            input = scan.nextLine();
+            if (input.toLowerCase().equals("b"))
+                return;
+            c = CourseModel.getCourseModel().getCourseByID(input);
+            if (c == null) {
+                out.println("ERROR: Invalid course id.");
+            }
+        }
+
+        while (e == null) {
+            out.println("Enter one of the following exercise ids or 'B' to go back: ");
+            for (int i = 0; i < c.exerciseNames.size(); i++) {
+                System.out.println(" - ID: " + c.exerciseIds.get(i) + ", Name: " + c.exerciseNames.get(i));
+            }
+            out.print("Exercise ID: ");
+            input = scan.nextLine();
+            if (input.toLowerCase().equals("b"))
+                return;
+
+            e = ExerciseModel.getExerciseModel().getExerciseById(input);
+            if (e == null) {
+                out.println("ERROR: Invalid exercise id.");
+            }
+        }
+
+        while (true) {
+            out.println("Enter one of the following options:");
+            out.println("1 Add question to exercise");
+            out.println("2 Remove question from exercise");
+            out.println("3 Back");
+            out.print("Command #: ");
+            input = scan.nextLine();
+            switch (input) {
+                case "1":
+                    addQuestionToExercise(e);
+                    return;
+                case "2":
+                    removeQuestionFromExercise(e);
+                    return;
+                case "3":
+                    return;
+                default:
+                    out.println("Invalid command, try again.");
+                    break;
+            }
+        }
+    }
+
+    private void removeQuestionFromExercise(Exercise e) {
+        while (true) {
+            out.println("Enter the id of the question to remove or 'B' to go back:");
+            for (Question q : e.questions) {
+                out.println("ID: " + q.getQuestionID() + ", Text: " + q.getText());
+            }
+            out.print("Question ID: ");
+            String input = scan.nextLine();
+            if (input.toLowerCase().equals("b")) {
+                return;
+            }
+            try {
+                int qid = Integer.parseInt(input);
+                List<Integer> exQuestions = new ArrayList<>();
+                for (Question q : e.questions) {
+                    exQuestions.add(q.getQuestionID());
+                }
+                if (!exQuestions.contains(qid)) {
+                    out.println("Invalid question id.");
+                    continue;
+                }
+                ExerciseModel.getExerciseModel().removeQuestionFromExercise(qid, e.getId());
+                out.println("Question successfully removed!");
+                return;
+            } catch (NumberFormatException nfe) {
+                out.println("Invalid question id.");
+            }
+        }
+    }
+
+    private void addQuestionToExercise(Exercise e) {
+        while (true) {
+            out.println();
+            out.println("Enter one of the following options:");
+            out.println("1 Search Question By Question ID");
+            out.println("2 Search Question By Topic");
+            out.println("3 Back");
+            out.print("Command #: ");
+            String input = scan.nextLine();
+            switch (input) {
+                case "1":
+                    addQuestionByID(e);
+                    break;
+                case "2":
+                    addQuestionByTopic(e);
+                    break;
+                case "3":
+                    return;
+                default:
+                    out.println("Invalid command, try again.");
+                    break;
+            }
+        }
+    }
+
+    private void addQuestionByTopic(Exercise e) {
+        out.println("--------------------");
+        out.println("   Current topics");
+        out.println("--------------------");
+        try {
+            ArrayList<String> topics = TopicModel.getTopicModel().getAllTopics();
+            for (String topic : topics) {
+                out.println(topic);
+            }
+            out.print("Choose Topic id: ");
+            String input = scan.nextLine();
+            int id = Integer.parseInt(input);
+            List<Question> questions = QuestionController.getQuestionController().getQuestionsFromTopic(id);
+            out.println("\nQuestion that has topic -- " + TopicModel.getTopicModel().getTopicByID(id));
+            out.println("---------------------------------");
+            for (Question question : questions) {
+                out.println("Question ID : " + question.getQuestionID());
+                out.println("Text: " + question.getText());
+                out.println("---------------------------------");
+            }
+            out.print("Enter the id of the question you would like to add: ");
+            input = scan.nextLine();
+            int qid = Integer.parseInt(input);
+            Question question = QuestionModel.getQuestionModel().getQuestionByID(qid);
+            out.println("---------------------------------");
+            out.println("Question ID : " + question.getQuestionID());
+            out.println("Text: " + question.getText());
+            out.print("Would you like to add this question to " + e.getName() + "? (Y/N)");
+            input = scan.nextLine();
+            if (input.toLowerCase().equals("y")) {
+                ExerciseModel.getExerciseModel().addQuestionToExercise(question.getQuestionID(), e.getId());
+                out.println("Question successfully added.");
+            }
+        } catch (Exception ex) {
+            out.println("ERROR: " + ex.getMessage());
+        }
+    }
+
+    private void addQuestionByID(Exercise e) {
+        out.print("\nPlease Enter Question ID: ");
+        try {
+            String input = scan.nextLine();
+            int id = Integer.parseInt(input);
+            Question question = QuestionModel.getQuestionModel().getQuestionByID(id);
+            out.println("Question ID : " + question.getQuestionID());
+            out.println("Text: " + question.getText());
+            out.print("Would you like to add this question to " + e.getName() + "? (Y/N)");
+            input = scan.nextLine();
+            if (input.toLowerCase().equals("y")) {
+                ExerciseModel.getExerciseModel().addQuestionToExercise(question.getQuestionID(), e.getId());
+                out.println("Question successfully added.");
+            }
+        } catch (Exception ex) {
+            out.println("ERROR: " + ex.getMessage());
+        }
     }
 
     private void logOut() {

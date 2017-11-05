@@ -9,9 +9,10 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-public class QuestionController extends AbsController{
+public class QuestionController extends AbsController {
 
     private static QuestionController questionController = null;
+
     private QuestionController() {
         super();
     }
@@ -34,12 +35,12 @@ public class QuestionController extends AbsController{
         try {
             Map<Integer, String> topics = CourseController.getCourseController().listCourseTopics(courseID);
 
-            for(Integer topicID : topics.keySet()) {
+            for (Integer topicID : topics.keySet()) {
                 System.out.println("Topic ID: " + topicID
                         + " Topic Name: " + topics.get(topicID));
             }
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("ERROR:" + e.getMessage());
         }
         System.out.print("Please Enter Question Topic ID: ");
@@ -49,7 +50,7 @@ public class QuestionController extends AbsController{
         int difficulty = Integer.parseInt(scanner.nextLine());
 
         if (difficulty < 1 || difficulty > 5) {
-            System.out.println("Difficulty is out of range(1-5).");
+            System.out.println("Difficulty is out of range (1-5).");
             return;
         }
 
@@ -83,10 +84,10 @@ public class QuestionController extends AbsController{
 
         AnswerController answerController = AnswerController.getAnswerController();
 
-        if(hasParams.equals("y")) {
+        if (hasParams.equals("y")) {
             //TODO: add parameters
             ParametersController parametersController = ParametersController.getParametersController();
-            while(true) {
+            while (true) {
                 int parameterID = parametersController.addParameters(questionID);
                 while (true) {
                     try {
