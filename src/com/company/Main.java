@@ -1,4 +1,5 @@
 package com.company;
+
 import com.company.controller.Controller;
 import com.company.controller.ProfessorController;
 import com.company.controller.StudentController;
@@ -16,12 +17,14 @@ import java.io.IOException;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException{
-
-
-        TableCreator.resetDB();
-
+    public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Would you like to reset the database? (Y/N)");
+        String input = scanner.nextLine();
+        if (input.toLowerCase().equals("y"))
+            TableCreator.resetDB();
+
         System.out.println("GRADY-ENTS");
         System.out.print("Login ID: ");
         String username = scanner.next();
