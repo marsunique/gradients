@@ -228,7 +228,7 @@ public class StudentController implements Controller {
         System.out.println(" Points For Wrong:    " + (int)e.getPointsIncorrect());
         System.out.println(" Student Score:       " + e.getFinalScore());
         System.out.println(" Allowed Attempts:    " + e.getNumRetries());
-        System.out.println(" Student Attempts:    " + StudentModel.getStudentModel().getMaxNumberOfTimesAStudentHasTakenAHomework(e.getId(), ta.username));
+        System.out.println(" Student Attempts:    " + StudentModel.getStudentModel().getMaxNumberOfTimesAStudentHasTakenAHomework(e.getId(), student.username));
 
         System.out.println(hlines(title));
 
