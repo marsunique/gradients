@@ -167,16 +167,12 @@ public class StudentModel extends ModelBase {
             ResultSet rs = statement.executeQuery(query);
 
             Exercise exercise = ExerciseModel.getExerciseModel().getExerciseById(ex_id);
-
+            exercise.questions = new ArrayList<>();
 
             while (rs.next()){
-                List<Question> questions = new ArrayList<Question>();
-                List<Answer> answers = new ArrayList<Answer>();
-
+                exercise.setFinalScore(rs.getInt("score"));
                Answer response = getAnswerFromDb(rs.getInt("ans_id"));
                Answer correctResponse = getAnswerFromDb(rs.getInt("correct_ans_id"));
-               int q_id = rs.getInt("ques_id");
-               int pid = correctResponse.getParameterID();
 
                Question question = getQuestionFromDb(rs.getInt("ques_id"), correctResponse.getParameterID());
                question.setStudentAnswer(response);
@@ -255,5 +251,30 @@ public class StudentModel extends ModelBase {
             System.out.println("Error in getExerciseAttempt() method in StudentModel.java");
         }
         return null;
+    }
+
+    public int getMaxNumberOfTimesAStudentHasTakenAHomework(int ex_id, String student_id){
+        try{
+            Statement statement = conn.createStatement();
+            Question questionToReturn = new Question();
+
+
+            String query = "SELECT MAX(att_num) " +
+            "FROM Attempt " +
+            "WHERE student_id = '" + student_id + "' " +
+            "AND ex_id = " + ex_id + ";";
+
+
+            ResultSet rs = statement.executeQuery(query);
+
+            while (rs.next()){
+                return(rs.getInt("MAX(att_num)"));
+            }
+            return -1;
+        }catch(Exception e){
+            System.out.println("Error in getExerciseAttempt() method in StudentModel.java");
+        }
+        return -1;
+
     }
 }

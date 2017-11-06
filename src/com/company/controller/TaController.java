@@ -350,18 +350,55 @@ public class TaController implements Controller {
         System.out.println(hlines(title));
         System.out.println(title);
         System.out.println(hlines(title));
+        System.out.println(" Start Date:          " + e.getStart());
+        System.out.println(" End Date:            " + e.getEnd());
+        System.out.println(" Adaptive:            " + e.getAdaptive());
+        System.out.println(" Points Available:    " + (int)(e.questions.size()*e.getPointsCorrect()));
+        System.out.println(" Points For Correct:  " + (int)e.getPointsCorrect());
+        System.out.println(" Points For Wrong:    " + (int)e.getPointsIncorrect());
+        System.out.println(" Student Score:       " + e.getFinalScore());
+        System.out.println(" Allowed Attempts:    " + e.getNumRetries());
+        System.out.println(" Student Attempts:    " + StudentModel.getStudentModel().getMaxNumberOfTimesAStudentHasTakenAHomework(e.getId(), ta.username));
+
+        System.out.println(hlines(title));
 
         for (Question q : e.questions) {
-            System.out.println("  " + q.getText());
+            System.out.println("  " + questionTextMaybeParameterized(q));
             System.out.println("");
             System.out.println("    Student Response: " + q.getStudentAnswer().getText());
             System.out.println("    Correct Response: " + q.getActualAnswer().getText());
-            System.out.println("    " + q.getSolution());
+
+
+            if (q.getActualAnswer() == q.getStudentAnswer()){
+                System.out.println("    CORRECT!          + " + (int)e.getPointsCorrect() + " points");
+            }
+            else{
+                System.out.println("    INCORRECT.        - " + (int)e.getPointsIncorrect() + " points");
+            }
+            System.out.println("    Explanation:      " + q.getSolution());
             System.out.println("");
         }
         System.out.print("Press Enter to Continue");
         String input = scanner.nextLine();
     }
+
+    private String questionTextMaybeParameterized(Question q){
+        if (q.getParamIndex() == 0){
+            return q.getText();
+        }
+        else{
+            String[] temp = q.getText().split("<");
+
+            String prompt = temp[0];
+            for (int i = 1; i < temp.length; i ++){
+                temp[i] = temp[i].replace(">", "");
+                temp[i] = q.paramVals.get(i-1) + " " +  temp[i];
+                prompt += temp[i];
+            }
+            return prompt;
+        }
+    }
+
 
     public void logOut() {
         System.out.println("Good-bye");
